@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="001.common.sql.term_cashrecord">
+
+	<!-- 增加记录 -->
+	<insert id="insert_term_cashrecord" parameterType="map">
+		insert into biz_atmp_cashrecord
+		(
+			p_term_id,
+			term_date,
+			term_time,
+			batchno,
+			term_seqno,
+			cass1_number,
+			cass2_number,
+			cass3_number,
+			cass4_number,
+			cass5_number,
+			cass6_number,
+			cass1_face,
+			cass2_face,
+			cass3_face,
+			cass4_face,
+			cass5_face,
+			cass6_face
+		)
+		values
+		(
+			#{p_term_id	       	    , jdbcType=VARCHAR},
+			#{term_date	       	    , jdbcType=VARCHAR},
+			#{term_time		   	    , jdbcType=VARCHAR},
+			#{batchno	       	    , jdbcType=VARCHAR},
+			#{term_seqno	        , jdbcType=VARCHAR},
+			#{cass1_number          , jdbcType=VARCHAR},
+			#{cass2_number	        , jdbcType=VARCHAR},
+			#{cass3_number	        , jdbcType=VARCHAR},
+			#{cass4_number	        , jdbcType=VARCHAR},
+			#{cass5_number	        , jdbcType=VARCHAR},
+			#{cass6_number	        , jdbcType=VARCHAR},
+			#{cass1_face	        , jdbcType=VARCHAR},
+			#{cass2_face	        , jdbcType=VARCHAR},
+			#{cass3_face	        , jdbcType=VARCHAR},
+			#{cass4_face	        , jdbcType=VARCHAR},
+			#{cass5_face	        , jdbcType=VARCHAR},
+			#{cass6_face	        , jdbcType=VARCHAR}
+		)
+	</insert>
+
+</mapper>
+
+

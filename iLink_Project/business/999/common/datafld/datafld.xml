@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<define desc="YDT">
+  <field tag="1"   name="p_biz_seqno"     desc="前置流水号"       type="varchar2(32)" />
+  <field tag="2"   name="p_req_date"     desc="交易日期"       type="varchar2(8)" />
+  <field tag="3"   name="p_req_time"     desc="交易时间"       type="varchar2(8)" />
+  <field tag="4"   name="function"     desc="功能号"       type="varchar2(50)" />
+  <field tag="5"   name="hsunit"     desc="核算单位"       type="varchar2(50)" />
+  <field tag="6"   name="numno"     desc="客户编号"       type="varchar2(50)" />
+  <field tag="7"   name="accno"     desc="客户账号"       type="varchar2(50)" />
+  <field tag="8"   name="account"     desc="账户名称"       type="varchar2(50)" />
+  <field tag="9"   name="idtype"     desc="证件种类"       type="varchar2(50)" />
+  <field tag="10"   name="idcard"     desc="证件号码"       type="varchar2(50)" />
+  <field tag="11"   name="supply"     desc="代理类别"       type="varchar2(50)" />
+  <field tag="12"   name="opetype"     desc="业务种类"       type="varchar2(50)" />
+  <field tag="13"   name="agreement"     desc="协议类型"       type="varchar2(50)" />
+  <field tag="14"   name="pduno"     desc="合同(协议)号"       type="varchar2(50)" />
+  <field tag="15"   name="address"     desc="用电地址"       type="varchar2(50)" />
+  <field tag="16" 	name="numnoname" 		desc="户名" 			type="varchar2(50)" />
+  <field tag="17" 	name="pstatus" 		desc="协议状态" 			type="char(1)" />
+  <field tag="18" 	name="tellerno" 		desc="操作柜员号" 			type="varchar2(50)" />
+  <field tag="19" 	name="brno" 		desc="操作机构号" 			type="varchar2(50)" />
+  <field tag="20" 	name="hsunit1" 		desc="核算单位1" 			type="varchar2(50)" />
+  <field tag="21" 	name="numno1" 		desc="客户编号1" 			type="varchar2(50)" />
+  <field tag="22" 	name="code" 		desc="返回码" 			type="varchar2(50)" />
+  <field tag="23" 	name="desc" 		desc="返回描述" 			type="varchar2(50)" />
+  <field tag="24" 	name="aaaa" 		desc="返回描述" 			type="varchar2(50)" />
+  <field tag="25" 	name="amount" 		desc="金额" 			type="varchar2(50)" />
+  <field tag="26" 	name="status" 		desc="状态" 			type="varchar2(50)" />
+  <field tag="27" 	name="req_date" 		desc="交易日期" 			type="varchar2(50)" />
+  <field tag="28" 	name="biz_seqno" 		desc="交易流水号" 			type="varchar2(50)" />
+</define>

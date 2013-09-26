@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="999.common.sql.insert">
+	<!-- 我行多入差错表(前置表thirdchkflag='0',thirdsysstatus='0',bankchkflag='1',status='1') -->
+	<insert id="insert_errinfoOne" parameterType="map">
+		insert into BIZ_ERRTRANSDTL(
+		checkdate,
+		diffsystype,
+		chkdifftype,
+		entrustdate,
+		amount,
+		errdealflag,
+		errdealtype, 
+		p_req_date,
+		p_biz_seqno
+		)  (select 
+		#{syscheckdate,	jdbcType=VARCHAR},
+		'1',
+		'12',
+		thirdsysdate,
+		amount,
+		'0',
+		'0',
+		p_req_date,
+		p_biz_seqno
+		from BIZ_TRANS_INFO
+		where p_req_date = #{syscheckdate,	jdbcType=VARCHAR}
+		and thirdchkflag='0'
+		and thirdsysstatus='0'
+		and bankchkflag='1'
+		and status='1'
+		)
+	</insert>
+	<!-- 人行多入差错表(前置表thirdchkflag='1',thirdsysstatus='1',bankchkflag='0/1',status='0/3') -->
+	<insert id="insert_errinfoTwo" parameterType="map">
+		insert into BIZ_ERRTRANSDTL(
+		checkdate,
+		diffsystype,
+		chkdifftype,
+		entrustdate,
+		amount,
+		errdealflag,
+		errdealtype,
+		p_req_date,
+		p_biz_seqno
+		)  (select 
+		p_req_date,
+		'1',
+		'11',
+		p_req_date,
+		amount,
+		'0',
+		'1',
+		p_req_date,
+		p_biz_seqno
+		from BIZ_TRANS_INFO
+		where p_req_date = #{syscheckdate,	jdbcType=VARCHAR}
+		and
+		((thirdchkflag='1' and thirdsysstatus='1' and bankchkflag='1' and status='3')
+ 		or (thirdchkflag='1' and thirdsysstatus='1' and bankchkflag='0' and status='0'))
+		)
+	</insert>
+	<!-- 人行多入差错表（第三方表cstatus='0'） -->
+	<insert id="insert_errinfoThree" parameterType="map">
+		insert into BIZ_ERRTRANSDTL(
+		checkdate,
+		diffsystype,
+		chkdifftype,
+		entrustdate,
+		amount,
+		errdealflag,
+		errdealtype,
+		p_req_date,
+		p_biz_seqno
+		)  (select 
+		chkdate,
+		'1',
+		'11',
+		orientrustdate,
+		amount,
+		'0',
+		'1',
+		chkdate,
+		oritrano
+		from BIZ_THIRD_TRANS_INFO
+		where chkdate=#{syscheckdate,	jdbcType=VARCHAR} and cstatus = '0')
+	</insert>
+	<!-- 核心多入差错表(核心表chkflag='0') -->
+	<insert id="insert_errinfoFour" parameterType="map">
+		insert into BIZ_ERRTRANSDTL(
+		checkdate,
+		diffsystype,
+		chkdifftype,
+		entrustdate,
+		amount,
+		errdealflag,
+		errdealtype,
+		p_req_date,
+		p_biz_seqno)
+		(select
+		p_req_date,
+		'2',
+		'21',
+		p_req_date,
+		amount,
+		'0',
+		'0',
+		p_req_date,
+		p_biz_seqno
+		from BIZ_HOST_TRANS_INFO
+		where p_req_date=#{syscheckdate,	jdbcType=VARCHAR}
+		and chkflag = '0')
+	</insert>
+
+</mapper>
+
+

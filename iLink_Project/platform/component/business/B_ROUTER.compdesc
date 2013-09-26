@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="路由组件" desc="路由组件"> 
+  <params> 
+    <!--表示组件需要的外部传入的参数 -->  
+    <variable name="routeRule" type="string" displayname="路由方式" defvalue="00"/>  
+    <variable name="targetChannelCode" type="string" displayname="目标接出渠道代码"/>  
+    <variable name="targetAdapterId" type="string" displayname="目标接出适配器ID"/>
+    <variable name="cardNum" type="string" displayname="卡号字段名"/>  
+     
+  </params>  
+  <results> 
+     
+  </results> 
+</root>

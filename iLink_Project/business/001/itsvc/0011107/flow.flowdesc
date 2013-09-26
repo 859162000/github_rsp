@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="ATMP内部授权交易模板" desc="包括密钥申请、密钥更新、配钞、状态通知、设备例外通知、帐户例外通知、轧帐、参数下载、卡表下载、确认交易"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

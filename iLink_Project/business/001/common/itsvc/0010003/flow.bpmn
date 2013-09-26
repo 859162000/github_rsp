@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_3-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="001.common.itsvc.0010003" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_2" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_3" name="响应码转换组件" tns:taskName="platform.component.business.B_RESPONSE_MAPPING" >
+      <ioSpecification>
+        <dataInput id="_3_dataBusInput" name="dataBus" />
+        <dataInput id="_3_componentIdInput" name="componentId" />
+        <dataInput id="_3_mappingFlagInput" name="mappingFlag" />
+        <dataOutput id="_3_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_3_dataBusInput</dataInputRefs>
+          <dataInputRefs>_3_componentIdInput</dataInputRefs>
+          <dataInputRefs>_3_mappingFlagInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_3_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_3_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"retcode_convert"</sourceRef>
+        <targetRef>_3_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_3_mappingFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_3_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_5" name="异常代理处理" scriptFormat="http://www.java.com/java" >
+      <script>// 若应用未设置错误码，则认为是系统错误
+if ("0000000".equals(dataBus.get("p_resp_code")))
+{
+	dataBus.set("p_front_resp_code", "06");
+	dataBus.set("p_resp_code", "9001003");
+}
+if (dataBus.get("p_front_resp_code") == null&amp;&amp;dataBus.get("p_backend_resp_code") != null)
+    dataBus.set("p_front_resp_code", dataBus.get("p_backend_resp_code"));
+else if (dataBus.get("p_front_resp_code") == null&amp;&amp;dataBus.get("p_backend_resp_code") == null)
+	dataBus.set("p_front_resp_code", "96");</script>
+    </scriptTask>
+
+    <!-- connections -->
+    <sequenceFlow id="_3-_2" sourceRef="_3" targetRef="_2" />
+    <sequenceFlow id="_5-_3" sourceRef="_5" targetRef="_3" />
+    <sequenceFlow id="_1-_5" sourceRef="_1" targetRef="_5" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="001.common.itsvc.0010003" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="50" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="50" y="256" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="16" y="176" width="117" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="18" y="96" width="112" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_3-_2" >
+        <di:waypoint x="74" y="200" />
+        <di:waypoint x="74" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_3" >
+        <di:waypoint x="74" y="120" />
+        <di:waypoint x="74" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_5" >
+        <di:waypoint x="74" y="40" />
+        <di:waypoint x="74" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

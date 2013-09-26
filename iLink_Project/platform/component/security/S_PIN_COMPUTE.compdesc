@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="PIN加密组件" desc="PIN加密组件"> 
+  <params> 
+    <variable name="platformType" type="string" dict="SEC_PLATFORM" displayname="加密平台"/>
+    <variable name="saveType" type="string" dict="SEC_KEYSAVE" displayname="密钥存储"/>
+    <variable name="keyGroup" type="string" displayname="密钥组ID"/>
+    <variable name="pinFormat" type="string" dict="PIN_FORMAT" displayname="PIN加密格式"/>  
+    <variable name="pin" type="binary" displayname="PIN明文"/>  
+    <variable name="account" type="string" displayname="账号"/>  
+    <variable name="userCover" type="string" displayname="用户保留字"/>   
+     
+  </params>  
+  <results> 
+    <variable name="pinBlock" type="binary" displayname="PIN加密结果"/> 
+     
+  </results> 
+</root>

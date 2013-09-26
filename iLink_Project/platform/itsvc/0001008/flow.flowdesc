@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="流程名称" desc="详细描述"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/>  
+    <variable name="t_hostservice_query" type="string" displayname="查询核心批次结果服务ID"/>  
+    <variable name="t_ftp_host" type="string" displayname="FTP标识号" desc="FTP标识号"/>  
+    <variable name="t_hostservice_download" type="string" displayname="请求核心下载服务ID" desc="请求核心下载服务ID"/>  
+    <variable name="t_sqlldr_id" type="string" displayname="拆分文件SQLLOADER的ID" desc="拆分文件SQLLOADER的ID"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

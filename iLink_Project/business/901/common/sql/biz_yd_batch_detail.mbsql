@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="901.common.sql.biz_yd_batch_detail">
+	<select id="count_details" parameterType="map" resultType="map">
+		select count(t.bat_no) as detail_count from biz_yd_batch_detail t
+		where
+			(t.trade_status='0' or t.trade_status='1') and
+			t.bat_no=#{bat_no, jdbcType=VARCHAR} and
+			t.work_date=#{work_date, jdbcType=VARCHAR} 
+	</select>
+	
+	<select id="getOneBystatus" parameterType="map" resultType="map">
+		select t.seq_no,t.send_bank,t.payer_acc,t.payer_name,t.currency,t.txn_amt,t.smr,t.recv_bank,t.payee_name,t.vouch_type,t.vouch_date,t.vouch_no,t.trade_status,t.bank_sysseq,t.error_code,t.error_msg 
+		from biz_yd_batch_detail t where ROWNUM = 1 AND  t.trade_status=#{trade_status, jdbcType=VARCHAR}
+		and t.bat_no=#{bat_no, jdbcType=VARCHAR} and
+			t.work_date=#{work_date, jdbcType=VARCHAR}
+	</select>
+	<select id="selectList" parameterType="map" resultType="map">
+		select * from biz_yd_batch_detail 
+		where
+			bat_no=#{bat_no, jdbcType=VARCHAR}  and work_date =#{work_date,jdbcType=VARCHAR}
+			
+	</select>
+</mapper>
+
+

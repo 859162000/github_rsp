@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="PIN转换组件" desc="PIN转换组件"> 
+  <params> 
+    <variable name="platformType" type="string" dict="SEC_PLATFORM" displayname="加密平台"/>
+    <variable name="saveType" type="string" dict="SEC_KEYSAVE" displayname="密钥存储"/>
+    <variable name="keyGroup" type="string" displayname="密钥组ID"/>
+    <variable name="desKeyGroup" type="string" displayname="目标密钥组ID"/>  
+    <variable name="pinFormat" type="string" dict="PIN_FORMAT" displayname="源PIN格式"/>  
+    <variable name="desPinFormat" type="string" dict="PIN_FORMAT" displayname="目标PIN格式"/>  
+    <variable name="pinBlock" type="binary" displayname="源PINBlock" />  
+    <variable name="account" type="string" displayname="源账号"/>  
+    <variable name="desAccount" type="string" displayname="目标账号"/>  
+    <variable name="userCover" type="string" displayname="用户保留字"/>  
+     
+  </params>  
+  <results> 
+    <variable name="desBlockResult" type="binary" displayname="转换后的PINBlock"/>  
+     
+  </results> 
+</root>

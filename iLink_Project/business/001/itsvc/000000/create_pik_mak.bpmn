@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_4-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="001.000000.flow.create_pik_mak" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_2" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <scriptTask id="_3" name="将pik和mak更新到加密平台" scriptFormat="http://www.java.com/java" >
+      <script>// 获取应答报文中的2个密钥
+byte[] bs = dataBus.getBytes("add_data");
+byte[] pik = new byte[8];
+System.arraycopy(bs, 11, pik, 0, 8);
+System.out.println("pik:"+StringUtil.bytes2HexStr(pik));
+byte[] mak = new byte[8];
+System.arraycopy(bs, 19, mak, 0, 8);
+System.out.println("mak:"+StringUtil.bytes2HexStr(mak));
+
+byte[] zmk = StringUtil.hexStr2Bytes("00000000");
+// 调用加密机接口进行密钥重置</script>
+    </scriptTask>
+    <task id="_4" name="请求卡前置生成pik和mak" tns:taskName="platform.component.business.B_SERVICE_REQUEST" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <script>// 卡系统需要信息
+		// 头部信息
+		dataBus.set("backend_head_length",new byte[]{0x2E});
+		dataBus.set("backend_msg_version",new byte[]{0x02});
+		dataBus.set("backend_destination_id","00010000   ");
+		dataBus.set("backend_source_id",	 "           ");
+		dataBus.set("backend_reversed_use",new byte[]{0x00,0x00,0x00});
+		dataBus.set("backend_batch_no",new byte[]{0x00});
+		dataBus.set("backend_transaction_info","00000000");
+		dataBus.set("backend_user_info",new byte[]{0x00});
+		dataBus.set("backend_reject_code","00000");</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_4_dataBusInput" name="dataBus" />
+        <dataInput id="_4_componentIdInput" name="componentId" />
+        <dataOutput id="_4_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_4_dataBusInput</dataInputRefs>
+          <dataInputRefs>_4_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_4_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_4_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"send_host"</sourceRef>
+        <targetRef>_4_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_3-_2" sourceRef="_3" targetRef="_2" />
+    <sequenceFlow id="_4-_3" sourceRef="_4" targetRef="_3" />
+    <sequenceFlow id="_1-_4" sourceRef="_1" targetRef="_4" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="001.000000.flow.create_pik_mak" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="84" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="84" y="256" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="16" y="176" width="185" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="20" y="96" width="176" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_3-_2" >
+        <di:waypoint x="108" y="200" />
+        <di:waypoint x="108" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_3" >
+        <di:waypoint x="108" y="120" />
+        <di:waypoint x="108" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_4" >
+        <di:waypoint x="108" y="40" />
+        <di:waypoint x="108" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="特殊响应码处理规则" desc="特殊响应码处理规则"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

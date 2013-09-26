@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root displayname="流水插入组件" desc="交易数据流水插入组件">
+	<params>
+		<!--表示组件需要的外部传入的参数 -->
+		<variable name="tableName" type="string" displayname="表名" defvalue="表名"/>
+		
+	</params>  
+	<results>
+		
+	</results>
+</root>

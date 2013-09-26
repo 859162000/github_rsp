@@ -1,0 +1,49 @@
+
+//list any import classes here.
+import com.eastcom.ilink.common.databus.DataBus;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRule;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRuleParam;
+
+
+//declare any global variables here
+
+
+rule "002.0025104.rule.0025104_rule1" 
+
+    when
+        //conditions
+        dataBus : DataBus()
+    then
+        //actions  //actions
+        //特殊数据域处理规则
+        dataBus.set("special_data_handle_process","false");
+        
+        //商户校验
+        dataBus.set("merchant_check_process","false");
+        
+        //终端校检
+        dataBus.set("terminal_check_process","false");
+        
+        dataBus.set("special_field_rule1", "0025004_special_field_rule1");
+        
+		dataBus.set("special_field_rule2", "0025004_special_field_rule2");
+		dataBus.set("tran_match_rule", "002.common.flow.empty");
+		
+		// 设置字段缺省值
+		 //主账号
+		dataBus.set("account_no", "164392260018081495");
+		//受卡方所在时间
+		dataBus.set("term_time", "094212");
+		//受卡方所在日期
+		dataBus.set("term_date", "0530");
+		//卡有效期
+		dataBus.set("expire_date", "0512");
+		//清算日期
+		dataBus.set("settle_date", "0530");
+		//受理方标识码（N..11(LLVAR)）
+		dataBus.set("acq_code", "0512345");
+		//附加响应数据(变长，设定为8位)
+		dataBus.set("add_resp_data", "0812345678");
+
+end
+

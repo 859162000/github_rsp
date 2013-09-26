@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_16-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_21-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_12-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_13-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="999.itsvc.9991001" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <exclusiveGateway id="_17" name="分支" gatewayDirection="Diverging" />
+    <task id="_16" name="判断是否已经签约" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_16_sqlTypeInput" name="sqlType" />
+        <dataInput id="_16_returnKeyInput" name="returnKey" />
+        <dataInput id="_16_sqlIdInput" name="sqlId" />
+        <dataInput id="_16_dataBusInput" name="dataBus" />
+        <dataOutput id="_16_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_16_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_16_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_16_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_16_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_16_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_16_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"selectinforesult"</sourceRef>
+        <targetRef>_16_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.selectinfo.queryinfo"</sourceRef>
+        <targetRef>_16_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_16_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_3" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_21" name="新增客户资料" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_21_sqlTypeInput" name="sqlType" />
+        <dataInput id="_21_returnKeyInput" name="returnKey" />
+        <dataInput id="_21_sqlIdInput" name="sqlId" />
+        <dataInput id="_21_dataBusInput" name="dataBus" />
+        <dataOutput id="_21_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_21_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_21_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_21_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_21_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_21_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"insert"</sourceRef>
+        <targetRef>_21_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_21_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.selectinfo.insert_infoOne"</sourceRef>
+        <targetRef>_21_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_21_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_21_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_4" name="脚本" scriptFormat="http://www.java.com/java" >
+      <script>if(
+(
+(dataBus.getList("selectinforesult").size() == 0)&amp;&amp;(dataBus.get("function").equals("1"))
+)||
+(
+(dataBus.getList("selectinforesult").size() &gt; 0)&amp;&amp;((dataBus.get("function").equals("2"))||
+(dataBus.get("function").equals("3"))||(dataBus.get("function").equals("4")))
+)
+)
+{
+dataBus.set("status","COMPLETE");
+dataBus.set("code","000000");
+dataBus.set("desc","交易成功");
+if (dataBus.get("function").equals("4"))
+{
+dataBus.set("hsunit1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("hsunit1").toString());
+dataBus.set("numno1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("numno1").toString());
+dataBus.set("accno1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("accno1").toString());
+dataBus.set("account1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("account1").toString());
+dataBus.set("idtype1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("idtype1").toString());
+dataBus.set("idcard1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("idcard1").toString());
+dataBus.set("supply1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("supply1").toString());
+dataBus.set("opetype1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("opetype1").toString());
+dataBus.set("agreement1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("agreement1").toString());
+dataBus.set("address1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("address1").toString());
+dataBus.set("numnoname1",((Map)(((List)dataBus.get("selectinforesult")).get(0))).get("numnoname1").toString());
+}
+}
+else if ((dataBus.getList("selectinforesult").size() == 0)&amp;&amp;((dataBus.get("function").equals("2"))||(dataBus.get("function").equals("3"))||(dataBus.get("function").equals("4"))))
+{
+dataBus.set("status","FAIL");
+dataBus.set("code","999999");
+dataBus.set("desc","客户未签约！");
+}
+else if ((dataBus.getList("selectinforesult").size() &gt; 0)&amp;&amp;(dataBus.get("function").equals("1")))
+{
+dataBus.set("status","FAIL");
+dataBus.set("code","999999");
+dataBus.set("desc","客户已签约！");
+}</script>
+    </scriptTask>
+    <exclusiveGateway id="_20" name="合并" gatewayDirection="Converging" />
+    <task id="_12" name="修改客户资料" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_12_sqlTypeInput" name="sqlType" />
+        <dataInput id="_12_returnKeyInput" name="returnKey" />
+        <dataInput id="_12_sqlIdInput" name="sqlId" />
+        <dataInput id="_12_dataBusInput" name="dataBus" />
+        <dataOutput id="_12_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_12_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_12_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_12_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_12_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_12_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"update"</sourceRef>
+        <targetRef>_12_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_12_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.selectinfo.updateinfo"</sourceRef>
+        <targetRef>_12_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_12_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_12_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_13" name="注销信息" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_13_sqlTypeInput" name="sqlType" />
+        <dataInput id="_13_returnKeyInput" name="returnKey" />
+        <dataInput id="_13_sqlIdInput" name="sqlId" />
+        <dataInput id="_13_dataBusInput" name="dataBus" />
+        <dataOutput id="_13_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_13_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_13_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_13_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_13_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_13_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"update"</sourceRef>
+        <targetRef>_13_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_13_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.selectinfo.logout"</sourceRef>
+        <targetRef>_13_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_13_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_13_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_16-_17" sourceRef="_16" targetRef="_17" />
+    <sequenceFlow id="_1-_16" sourceRef="_1" targetRef="_16" />
+    <sequenceFlow id="_4-_3" sourceRef="_4" targetRef="_3" />
+    <sequenceFlow id="_17-_21" sourceRef="_17" targetRef="_21" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return ((dataBus.getList("selectinforesult").size() == 0)&amp;&amp;(dataBus.get("function").equals("1")));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_20-_4" sourceRef="_20" targetRef="_4" />
+    <sequenceFlow id="_12-_20" sourceRef="_12" targetRef="_20" />
+    <sequenceFlow id="_13-_20" sourceRef="_13" targetRef="_20" />
+    <sequenceFlow id="_17-_20" sourceRef="_17" targetRef="_20" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (dataBus.get("function").equals("4")||(dataBus.getList("selectinforesult").size() &gt; 0)&amp;&amp;(dataBus.get("function").equals("1")));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_21-_20" sourceRef="_21" targetRef="_20" />
+    <sequenceFlow id="_17-_12" sourceRef="_17" targetRef="_12" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return ((dataBus.getList("selectinforesult").size() &gt; 0)&amp;&amp;(dataBus.get("function").equals("2")));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_17-_13" sourceRef="_17" targetRef="_13" name="constraint" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return ((dataBus.getList("selectinforesult").size() &gt; 0)&amp;&amp;(dataBus.get("function").equals("3")));</conditionExpression>
+    </sequenceFlow>
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="999.itsvc.9991001" >
+      <bpmndi:BPMNShape bpmnElement="_17" >
+        <dc:Bounds x="306" y="176" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="216" y="96" width="228" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="306" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="306" y="500" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_21" >
+        <dc:Bounds x="16" y="257" width="100" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="290" y="419" width="80" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_20" >
+        <dc:Bounds x="306" y="338" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="148" y="257" width="100" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="280" y="257" width="100" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_16-_17" >
+        <di:waypoint x="330" y="120" />
+        <di:waypoint x="330" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_16" >
+        <di:waypoint x="330" y="40" />
+        <di:waypoint x="330" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_3" >
+        <di:waypoint x="330" y="443" />
+        <di:waypoint x="330" y="524" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_21" >
+        <di:waypoint x="330" y="200" />
+        <di:waypoint x="66" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_20-_4" >
+        <di:waypoint x="330" y="362" />
+        <di:waypoint x="330" y="443" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_20" >
+        <di:waypoint x="198" y="281" />
+        <di:waypoint x="330" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_20" >
+        <di:waypoint x="330" y="281" />
+        <di:waypoint x="330" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_20" >
+        <di:waypoint x="330" y="200" />
+        <di:waypoint x="506" y="278" />
+        <di:waypoint x="330" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_21-_20" >
+        <di:waypoint x="66" y="281" />
+        <di:waypoint x="330" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_12" >
+        <di:waypoint x="330" y="200" />
+        <di:waypoint x="198" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_13" >
+        <di:waypoint x="330" y="200" />
+        <di:waypoint x="330" y="281" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

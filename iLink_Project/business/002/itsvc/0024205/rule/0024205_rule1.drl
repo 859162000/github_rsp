@@ -1,0 +1,34 @@
+
+//list any import classes here.
+import com.eastcom.ilink.common.databus.DataBus;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRule;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRuleParam;
+
+
+//declare any global variables here
+
+
+rule "002.0024205.rule.0024205_rule1" 
+
+    when
+        //conditions
+        dataBus : DataBus()
+    then
+       //actions
+        //特殊数据域处理规则
+        dataBus.set("special_data_handle_process","false");
+        
+        //商户校验
+        dataBus.set("merchant_check_process","false");
+        
+        //终端校检
+        dataBus.set("terminal_check_process","false");
+        
+        dataBus.set("do_special_field_rule1", "0024205_special_field_rule1");
+        
+		dataBus.set("do_special_field_rule2", "0024205_special_field_rule2");
+		
+		// 设置字段缺省值
+
+end
+

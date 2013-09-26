@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="999.common.sql.selectinfo">
+	<!-- 查询记录：单条和多条 -->	
+	<resultMap type="map" id="selectinforesult">
+		<result property="hsunit1" column="hsunit" javaType="string" />
+		<result property="numno1" column="numno" javaType="string" />
+		<result property="accno1" column="accno" javaType="string" />
+		<result property="account1" column="account" javaType="string" />
+		<result property="idtype1" column="idtype" javaType="string" />
+		<result property="idcard1" column="idcard" javaType="string" />
+		<result property="supply1" column="supply" javaType="string" />
+		<result property="opetype1" column="opetype" javaType="string" />
+		<result property="agreement1" column="agreement" javaType="string" />
+		<result property="address1" column="address" javaType="string" />
+		<result property="numnoname1" column="numnoname" javaType="string" />
+		<result property="rnum" column="rnum" javaType="string" />
+	</resultMap>
+	<update id="updateinfo" parameterType="map">
+		update BIZ_YDT_QY_INFO set
+			hsunit = #{hsunit ,jdbcType=VARCHAR},
+			numno = #{numno ,jdbcType=VARCHAR},
+			accno = #{accno ,jdbcType=VARCHAR},
+			account = #{account ,jdbcType=VARCHAR},
+			idtype = #{idtype ,jdbcType=VARCHAR},
+			idcard = #{idcard ,jdbcType=VARCHAR},
+			supply = #{supply ,jdbcType=VARCHAR},
+			opetype = #{opetype ,jdbcType=VARCHAR},
+			agreement = #{agreement ,jdbcType=VARCHAR},
+			address = #{address ,jdbcType=VARCHAR},
+			numnoname = #{numnoname ,jdbcType=VARCHAR}
+		where
+			pduno = #{pduno, jdbcType=VARCHAR}
+	</update>
+	<update id="logout" parameterType="map">
+		update BIZ_YDT_QY_INFO set
+		    pstatus = '0'
+		where
+			pduno = #{pduno, jdbcType=VARCHAR} AND pstatus = '1'
+	</update>
+	<select id="queryinfo" parameterType="map" resultMap="selectinforesult">
+		select rownum as rnum,hsunit,numno,accno,account,idtype,idcard,supply,opetype,agreement,address,numnoname
+			 from BIZ_YDT_QY_INFO
+		where
+			pduno = #{pduno, jdbcType=VARCHAR} AND pstatus = '1'
+	</select>
+	<update id="updatetransinfo" parameterType="map">
+		update BIZ_TRANS_INFO set
+		    status = '1'
+		where
+			p_req_time = #{req_time, jdbcType=VARCHAR} AND p_req_date = #{req_date, jdbcType=VARCHAR} AND p_biz_seqno = #{biz_seqno, jdbcType=VARCHAR} 
+	</update>
+	
+	<select id="selecttransinfo" parameterType="map" resultMap="transinfo">
+		select rownum rnum1,brno,tellerno,pduno,account,accno,p_req_time,p_req_date,p_biz_seqno,amount,status
+			 from BIZ_TRANS_INFO
+		where
+			 p_req_date >= #{startdate, jdbcType=VARCHAR} AND p_req_date &lt;= #{enddate, jdbcType=VARCHAR} AND ( (p_biz_seqno = #{biz_seqno, jdbcType=VARCHAR}) or (trim(#{biz_seqno}) is null) ) AND status = '1'
+	</select>
+	
+	<resultMap type="map" id="transinfo">
+		<result property="brno" column="brno" javaType="string" />
+		<result property="tellerno" column="tellerno" javaType="string" />
+		<result property="pduno" column="pduno" javaType="string" />
+		<result property="account" column="account" javaType="string" />
+		<result property="accno"  column="accno" javaType="string" />
+		<result property="p_req_time" column="p_req_time" javaType="string" />
+		<result property="p_req_date" column="p_req_date" javaType="string" />
+		<result property="p_biz_seqno" column="p_biz_seqno"   javaType="string" />
+		<result property="amount" column="amount" javaType="string" />
+		<result property="status" column="status" javaType="string" />
+		<result property="rownum" column="rnum1" javaType="string" />
+	</resultMap>
+	<insert id="insert_infoOne" parameterType="map">
+		insert into BIZ_YDT_QY_INFO(P_BIZ_SEQNO,P_REQ_DATE,P_REQ_TIME,HSUNIT,NUMNO,ACCNO,ACCOUNT,IDTYPE,IDCARD,SUPPLY,OPETYPE,AGREEMENT,PDUNO,ADDRESS,NUMNONAME,TELLERNO,BRNO,PSTATUS
+		) values (
+		#{p_biz_seqno       ,jdbcType=VARCHAR},
+        #{p_req_date        ,jdbcType=VARCHAR},
+        #{p_req_time        ,jdbcType=VARCHAR},
+        #{hsunit            ,jdbcType=VARCHAR},
+        #{numno             ,jdbcType=VARCHAR},
+        #{accno             ,jdbcType=VARCHAR},
+        #{account           ,jdbcType=VARCHAR},
+        #{idtype            ,jdbcType=VARCHAR},
+        #{idcard            ,jdbcType=VARCHAR},
+        #{supply            ,jdbcType=VARCHAR},
+        #{opetype           ,jdbcType=VARCHAR},
+        #{agreement         ,jdbcType=VARCHAR},
+        #{pduno             ,jdbcType=VARCHAR},
+        #{address           ,jdbcType=VARCHAR},
+        #{numnoname         ,jdbcType=VARCHAR},
+        #{tellerno          ,jdbcType=VARCHAR},
+        #{brno              ,jdbcType=VARCHAR},
+        '1')
+	</insert>
+</mapper>
+
+

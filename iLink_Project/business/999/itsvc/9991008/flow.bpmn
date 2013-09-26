@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_11-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_12-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_13-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_14-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="999.itsvc.9991008" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_10" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_11" name="登记差错表_我行多入差错表(前置表thirdchkflag='0',thirdsysstatus='0',bankchkflag='1',banksysstatus='1')" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_11_sqlTypeInput" name="sqlType" />
+        <dataInput id="_11_returnKeyInput" name="returnKey" />
+        <dataInput id="_11_sqlIdInput" name="sqlId" />
+        <dataInput id="_11_dataBusInput" name="dataBus" />
+        <dataOutput id="_11_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_11_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_11_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_11_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_11_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_11_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"insert"</sourceRef>
+        <targetRef>_11_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_11_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.insert.insert_errinfoOne"</sourceRef>
+        <targetRef>_11_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_11_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_12" name="登记差错表_人行多入差错表(前置表thirdchkflag='1',thirdsysstatus='1',bankchkflag='0/1',banksysstatus='0/3')" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_12_sqlTypeInput" name="sqlType" />
+        <dataInput id="_12_returnKeyInput" name="returnKey" />
+        <dataInput id="_12_sqlIdInput" name="sqlId" />
+        <dataInput id="_12_dataBusInput" name="dataBus" />
+        <dataOutput id="_12_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_12_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_12_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_12_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_12_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_12_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"insert"</sourceRef>
+        <targetRef>_12_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_12_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.insert.insert_errinfoTwo"</sourceRef>
+        <targetRef>_12_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_12_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_12_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_13" name="登记差错表_核心多入差错表(核心表chkflag='0')" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_13_sqlTypeInput" name="sqlType" />
+        <dataInput id="_13_returnKeyInput" name="returnKey" />
+        <dataInput id="_13_sqlIdInput" name="sqlId" />
+        <dataInput id="_13_dataBusInput" name="dataBus" />
+        <dataOutput id="_13_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_13_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_13_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_13_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_13_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_13_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"insert"</sourceRef>
+        <targetRef>_13_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_13_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.insert.insert_errinfoFour"</sourceRef>
+        <targetRef>_13_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_13_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_13_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_14" name="登记差错表_人行多入差错表（第三方表cstatus='0'）" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_14_sqlTypeInput" name="sqlType" />
+        <dataInput id="_14_returnKeyInput" name="returnKey" />
+        <dataInput id="_14_sqlIdInput" name="sqlId" />
+        <dataInput id="_14_dataBusInput" name="dataBus" />
+        <dataOutput id="_14_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_14_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_14_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_14_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_14_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_14_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"insert"</sourceRef>
+        <targetRef>_14_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_14_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.insert.insert_errinfoThree"</sourceRef>
+        <targetRef>_14_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_14_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_14_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_13-_10" sourceRef="_13" targetRef="_10" />
+    <sequenceFlow id="_1-_11" sourceRef="_1" targetRef="_11" />
+    <sequenceFlow id="_11-_12" sourceRef="_11" targetRef="_12" />
+    <sequenceFlow id="_14-_13" sourceRef="_14" targetRef="_13" />
+    <sequenceFlow id="_12-_14" sourceRef="_12" targetRef="_14" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="999.itsvc.9991008" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="322" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="322" y="416" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="16" y="96" width="660" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="16" y="176" width="661" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="195" y="336" width="302" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" >
+        <dc:Bounds x="180" y="256" width="333" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_13-_10" >
+        <di:waypoint x="346" y="360" />
+        <di:waypoint x="346" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_11" >
+        <di:waypoint x="346" y="40" />
+        <di:waypoint x="346" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11-_12" >
+        <di:waypoint x="346" y="120" />
+        <di:waypoint x="346" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14-_13" >
+        <di:waypoint x="346" y="280" />
+        <di:waypoint x="346" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_14" >
+        <di:waypoint x="346" y="200" />
+        <di:waypoint x="346" y="280" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

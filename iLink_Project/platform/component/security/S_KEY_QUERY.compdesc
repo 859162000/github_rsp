@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="密钥查询组件" desc="密钥查询组件"> 
+  <params> 
+    <variable name="platformType" type="string" dict="SEC_PLATFORM" displayname="加密平台"/>
+    <variable name="saveType" type="string" dict="SEC_KEYSAVE" displayname="密钥存储"/>
+    <variable name="keyGroup" type="string" displayname="密钥组ID"/>
+    <variable name="keyType" type="string" dict="GEN_KEY_TYPE" displayname="密钥类型"/>    
+     
+  </params>  
+  <results> 
+    <variable name="length" type="string" displayname="查询到的密钥长度"/>  
+    <variable name="encryptedKey" type="binary" displayname="查询到的密钥密文"/>  
+    <variable name="encryptedKeyCK" type="binary" displayname="查询到的密钥校验串"/> 
+     
+  </results> 
+</root>

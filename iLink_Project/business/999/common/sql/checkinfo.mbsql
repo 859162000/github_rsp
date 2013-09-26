@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="999.common.sql.checkinfo">
+	<!-- 更新第三方与前置成功或超时或失败平数据，第三方表cstatus=1 -->	
+	<update id="third_updateOne" parameterType="map">
+		update BIZ_THIRD_TRANS_INFO
+			set cstatus = '1'
+		where (oritrano,orientrustdate)
+			in
+			(select thirdsysseq, thirdsysdate from BIZ_TRANS_INFO where
+				P_REQ_DATE = #{syscheckdate,	jdbcType=VARCHAR})
+			and chkdate = #{syscheckdate,	jdbcType=VARCHAR}
+	</update>
+	<!-- 更新第三方比前置多数据，第三方表cstatus=0 -->	
+	<update id="third_updateTwo" parameterType="map">
+		update BIZ_THIRD_TRANS_INFO
+			set cstatus = '0'
+		where chkdate = #{syscheckdate,	jdbcType=VARCHAR}
+			and (cstatus != '1' or cstatus is NULL)
+	</update>
+	<!-- 更新前置与人行平数据，前置表thirdchkflag='1',tradestatus='1',thirdsysstatus='1' -->	
+	<update id="third_updateThree" parameterType="map">
+		update BIZ_TRANS_INFO
+			set thirdchkflag='1',tradestatus='1',thirdsysstatus='1'
+		where
+			P_REQ_DATE = #{syscheckdate,	jdbcType=VARCHAR}
+			and (thirdsysdate,thirdsysseq) in
+			(select orientrustdate,oritrano from BIZ_THIRD_TRANS_INFO
+			where chkdate=#{syscheckdate,	jdbcType=VARCHAR})
+	</update>
+	<!-- 更新前置比人行多数据，前置表thirdchkflag='0',tradestatus='0',thirdsysstatus='0' -->	
+	<update id="third_updateFour" parameterType="map">
+		update BIZ_TRANS_INFO
+			set thirdchkflag='0',tradestatus='0',thirdsysstatus='0'
+		where P_REQ_DATE = #{syscheckdate,	jdbcType=VARCHAR}
+		and (thirdchkflag != '1' or thirdchkflag is NULL)
+	</update>
+	<!-- 更新核心与前置平，核心表chkflag=1 -->	
+	<update id="host_updateOne" parameterType="map">
+		update BIZ_HOST_TRANS_INFO set chkflag='1'
+			where P_REQ_DATE =#{syscheckdate,	jdbcType=VARCHAR}
+			and (P_REQ_DATE,P_BIZ_SEQNO) in (select P_REQ_DATE,P_BIZ_SEQNO from BIZ_TRANS_INFO
+ 				where P_REQ_DATE=#{syscheckdate,	jdbcType=VARCHAR})
+	</update>
+	<!-- 更新核心比前置多，核心表chkflag=0 -->	
+	<update id="host_updateTwo" parameterType="map">
+		update BIZ_HOST_TRANS_INFO set chkflag='0'
+			where P_REQ_DATE =#{syscheckdate,	jdbcType=VARCHAR}
+			and (chkflag !='1' or chkflag is NULL)
+	</update>
+	<!-- 更新前置与核心平，前置表bankchkflag='1',banksysstatus='1' -->	
+	<update id="host_updateThree" parameterType="map">
+		update BIZ_TRANS_INFO set bankchkflag = '1',status = '1'
+			where P_REQ_DATE = #{syscheckdate,	jdbcType=VARCHAR}
+			and  (P_REQ_DATE,P_BIZ_SEQNO) in (select P_REQ_DATE,P_BIZ_SEQNO from BIZ_HOST_TRANS_INFO
+			where P_REQ_DATE = #{syscheckdate,	jdbcType=VARCHAR})
+	</update>
+	<!-- 更新前置与核心多，核心记账失败，前置表bankchkflag='0',banksysstatus='0' -->	
+	<update id="host_updateFour" parameterType="map">
+		update BIZ_TRANS_INFO set bankchkflag = '0',status = '0'
+			where P_REQ_DATE = #{syscheckdate,	jdbcType=VARCHAR} and 
+			(bankchkflag != '1' or bankchkflag is NULL)
+	</update>
+</mapper>

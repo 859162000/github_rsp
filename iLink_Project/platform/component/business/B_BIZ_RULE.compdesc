@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="业务规则处理组件" desc="依照优先级处理内部交易码关联的规则集合"> 
+  <params> 
+    <!--表示组件需要的外部传入的参数 -->  
+    <variable name="executeId" type="string" displayname="规则IDs(用;分割多个ID组成)" defvalue="规则ID1;规则ID1"/>  
+     
+  </params>  
+  <results> 
+     
+  </results> 
+</root>

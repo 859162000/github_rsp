@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root displayname="交易数据校验组件" desc="交易数据流水更新组件">
+	<params>
+		<!--表示组件需要的外部传入的参数 -->
+		<variable name="componentId" type="string" displayname="组件编号"/>
+		<variable name="dataBus" type="databus" displayname="数据总线"/>
+	</params>  
+	<results>
+		<variable name="dataBus" type="databus" displayname="数据总线"/>
+	</results>
+</root>

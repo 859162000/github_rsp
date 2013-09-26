@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<define desc="POSP">
+	<field tag="2" 	name="account_num" 		desc="主账号" 			type="char(32) " />
+	<field tag="3" 	name="out_trans_code" 	desc="外部交易处理码" 	type="varchar2(10) " />
+	<field tag="4" 	name="amount" 			desc="交易金额" 			type="char(15)" />
+	<field tag="7" 	name="channel_id" 		desc="渠道标识码 " 		type="char(2)" />
+	<field tag="11" name="term_sn" 			desc="终端流水号" 		type="char(32)" />
+	<field tag="12" name="term_loc_time" 	desc="终端本地时间" 		type="char(6)" />
+	<field tag="13" name="term_loc_date" 	desc="终端本地日期" 		type="char(8)" />
+	<field tag="14" name="expire_date" 		desc="卡有效期" 			type="char(8)" />
+	<field tag="15" name="settle_date" 		desc="清算日期" 			type="char(8)" />
+	<field tag="18" name="merch_type" 		desc="商户类型" 			type="char(4)" />
+	<field tag="20" name="trans_flag" 		desc="交易标志" 			type="char(8)" />
+	<field tag="21" name="term_cash_data" 	desc="加钞内容" 			type="varchar2(128)" />
+	<field tag="22" name="service_entry"	desc="服务点进入方式" 	type="char(3)" />
+	<field tag="23" name="card_sn"		 	desc="卡序列号" 			type="char(3)" />
+	<field tag="24" name="term_status_data" desc="终端状态数据" 		type="varchar2(128)" />
+	<field tag="25" name="service_cond"		desc="服务点条件代码" 	type="char(2)" />
+	<field tag="28" name="fee1" 			desc="手续费1" 			type="char(8)" />
+	<field tag="29" name="fee2" 			desc="手续费2" 			type="char(8)" />
+	<field tag="30" name="fee3" 			desc="手续费3" 			type="char(8)" />
+	<field tag="35" name="track2" 			desc="第二磁道数据" 		type="varchar2(37)" />
+	<field tag="36" name="track3" 			desc="第三磁道数据" 		type="varchar2(104)" />
+	<field tag="37" name="ilink_sn" 		desc="前置流水号" 		type="char(32)" />
+	<field tag="38" name="auth_resp" 		desc="授权标识响应码"	type="char(16)" />
+	<field tag="39" name="resp_code" 		desc="前置响应码" 		type="char(4)" />
+	<field tag="40" name="open_branch" 		desc="开户行信息" 		type="varchar2(53)" />
+	<field tag="41" name="term_id" 			desc="终端标识码" 		type="char(8)" />
+	<field tag="42" name="shop_id" 			desc="受卡方标识号" 		type="char(11)" />
+	<field tag="49" name="currency_code" 	desc="交易货币代码" 		type="char(3)" />
+	<field tag="51" name="counter_no" 		desc="柜员号" 			type="char(7)" />
+	<field tag="52" name="pin" 				desc="PIN密文块" 		type="varchar2(128)" />
+	<field tag="53" name="sec_con_data" 	desc="安全控制域" 		type="varchar2(16)" />
+	<field tag="54" name="add_amount" 		desc="附加金额" 			type="char(39)" />
+	<field tag="55" name="ic_data" 			desc="基于PBOC 借贷记标准的IC 卡数据域" type="blob" />
+	<field tag="59" name="add_message_cause" desc="扩展消息原因码" 	type="varchar2(103)" />
+	<field tag="60" name="message_cause" 	desc="消息原因码" 		type="varchar2(10)" />
+	<field tag="61" name="custom_info" 		desc="客户信息" 			type="varchar2(56)" />
+	<field tag="62" name="add_pin" 			desc="扩展的pin密文" 	type="varchar2(128)" />
+	<field tag="63" name="identify_info" 	desc="证件信息" 			type="varchar2(24)" />
+	<field tag="72" name="batch_no" 		desc="批次号" 			type="char(16)" />
+	<field tag="90" name="original_data" 	desc="原始交易信息" 		type="varchar2(128)" />
+	<field tag="93" name="resp_order" 		desc="响应指示符" 		type="char(3)" />
+	<field tag="96" name="security_code" 	desc="报文安全码" 		type="varchar2(128)" />
+	<field tag="102" name="account_id1" 	desc="转出账号" 			type="char(32)" />
+	<field tag="103" name="account_id2" 	desc="转入账号" 			type="char(32)" />
+	<field tag="106" name="draft_sn" 		desc="汇票附加标志"		type="char(16)" />
+	<field tag="120" name="add_data" 		desc="附加信息" 			type="varchar2(999)" />
+	<field tag="121" name="account_confirm" desc="对帐信息" 			type="varchar2(999)" />
+	<field tag="122" name="req_data" 		desc="发起自定义数据" 	type="varchar2(999)" />
+	<field tag="123" name="resp_data" 		desc="应答自定义数据" 	type="varchar2(999)" />
+	<field tag="128" name="mac" 			desc="报文鉴别码" 		type="varchar2(128)" />
+	<field tag="" name="trans_code" 		desc="内部交易处理码" 	type="char(6)" />
+	<field tag="" name="inst_no" 			desc="机构编号" 			type="char(16)" />
+	<field tag="" name="native_flag" 		desc="本他行标志" 		type="char(1)" />
+	<field tag="" name="amount2" 			desc="交易金额2" 		type="char(15)" />
+	<field tag="" name="original_trans_code" desc="原交易处理码"		type="char(6)" />
+	<field tag="" name="original_date" 		desc="原日期" 			type="char(8)" />
+	<field tag="" name="original_time" 		desc="原时间" 			type="char(6)" />
+	<field tag="" name="original_sn" 		desc="原流水号" 			type="char(32)" />
+	<field tag="" name="original_amount" 	desc="原交易金额" 		type="char(15)" />
+	<field tag="" name="acct_balance" 		desc="账户余额" 			type="char(15)" />
+	<field tag="" name="avail_balance" 		desc="可用余额" 			type="char(15)" />
+	<field tag="" name="day_balance" 		desc="当日可用余额" 		type="char(15)" />
+	<field tag="" name="trans_date" 		desc="交易日期" 			type="char(8)" />
+	<field tag="" name="trans_time" 		desc="交易时间" 			type="char(6)" />
+	<field tag="" name="host_sn" 			desc="主机流水号" 		type="char(32)" />
+	<field tag="" name="host_resp_code" 	desc="主机响应码" 		type="char(6)" />
+	<field tag="" name="ilink_clear_date"	desc="前置清算日期" 		type="char(8)" />
+	<field tag="" name="clear_date" 		desc="清算日期" 			type="char(8)" />
+	<field tag="" name="send_inst_id" 		desc="发送机构标识码" 	type="char(11)" />
+	<field tag="" name="accept_inst_id" 	desc="接收机构标识码" 	type="char(11)" />
+	<field tag="" name="trans_status" 		desc="交易状态" 			type="char(1)" />
+	<field tag="" name="host_trans_code" 	desc="主机交易识别码" 	type="varchar2(10)" />
+</define>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="sql组件" desc="执行系统sql组件"> 
+	<params>
+		<!--表示组件需要的外部传入的参数 -->
+		<variable name="sqlId" type="string" displayname="SQL ID" defvalue="sqlid"/>
+		<variable name="sqlType" type="string" displayname="sql类型：select/insert/update/delete" defvalue="select"/>
+		
+	</params>  
+	<results>
+		<variable name="returnKey" type="string" displayname="返回字段" defvalue="dbResult"/>
+		
+	</results>
+</root>

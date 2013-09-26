@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="002.common.sql.ops_merch_info">
+	<!-- 查询记录：单条和多条 -->	
+	<resultMap type="map" id="ops_merch_info">
+		<result property="merch_code" 	column="MERCH_CODE"  	javaType="string"/>
+		<result property="merch_type" 	column="MERCH_TYPE" 	javaType="string"/>
+		<result property="merch_state" 	column="MERCH_STATE"		javaType="string"/>
+		<result property="merch_name" 	column="MERCH_NAME"  	javaType="string"/>
+		<result property="py_name" 	column="PY_NAME"  	javaType="string"/>
+		<result property="eng_name" 	column="ENG_NAME"  		javaType="string"/>
+		<result property="receive_bankname" 	column="RECEIVE_BANKNAME"  		javaType="string"/>
+		<result property="card_center_code" 	column="CARD_CENTER_CODE"  		javaType="string"/>
+		<result property="branch_code" 	column="BRANCH_CODE"  		javaType="string"/>
+		<result property="clear_acctno" 	column="CLEAR_ACCTNO"  	javaType="string"/>
+		<result property="merch_addr" column="MERCH_ADDR" javaType="string"/>
+		<result property="post_no" column="POST_NO" javaType="string"/>
+		<result property="phone_no" column="PHONE_NO" javaType="string"/>
+		<result property="attach_user" column="ATTACH_USER" javaType="string"/>
+		<result property="sttlacct_type" column="STTLACCT_TYPE" javaType="string"/>
+		<result property="deposit_bank" column="DEPOSIT_BANK" javaType="string"/>
+		<result property="sttlacct_no" column="STTLACCT_NO" javaType="string"/>
+		<result property="exec_no" column="EXEC_NO" javaType="string"/>
+		<result property="auto_clear_flag" column="AUTO_CLEAR_FLAG" javaType="string"/>
+		<result property="batch_time" column="BATCH_TIME" javaType="string"/>
+		<result property="state_word" column="STATE_WORD" javaType="string"/>
+		<result property="third_sttlacct_type" column="THIRD_STTLACCT_TYPE" javaType="string"/>
+		<result property="third_deposit_bank" column="THIRD_DEPOSIT_BANK" javaType="string"/>
+		<result property="third_settlacct_no" column="THIRD_SETTLACCT_NO" javaType="string"/>
+		<result property="third_exec_no" column="THIRD_EXEC_NO" javaType="string"/>
+		<result property="extra_name" column="EXTRA_NAME" javaType="string"/>
+		<result property="merch_deal_name" column="MERCH_DEAL_NAME" javaType="string"/>
+		<result property="psam_count" column="PSAM_COUNT" javaType="string"/>
+		<result property="scm_count" column="SCM_COUNT" javaType="string"/>
+		<result property="pos_count" column="POS_COUNT" javaType="string"/>
+		<result property="creator" column="CREATOR" javaType="int"/>
+		<result property="gmt_create" column="GMT_CREATE" javaType="date"/>
+		<result property="modifier" column="MODIFIER" javaType="int"/>
+		<result property="gmt_modified" column="GMT_MODIFIED" javaType="date"/>
+	</resultMap>	
+	
+	<select id="hasPrivilege" parameterType="list" resultType="string">
+		select '1' from ops_merch_info 
+		where MERCH_TYPE like '%' || #{terminal_ctrl[0].privilage_flag, JDBCTYPE=VARCHAR} || '%'
+		 AND MERCH_CODE=#{terminal_ctrl[0].merch_code, JDBCTYPE=VARCHAR}
+	</select>
+	
+</mapper>
+
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="001.common.sql.term_blackcard">
+
+	<resultMap type="map" id="black_type_result">
+		<result property="blackcard_type" 	column="TYPE"  		javaType="string"/>
+		<result property="blackcard_desc" 	column="REMARK" 	javaType="string"/>
+	</resultMap>	
+	<select id="check_is_blackcard" parameterType="map" resultMap="black_type_result">
+		select type, remark from ops_blackcard 
+		where
+			account_num=#{account_no, jdbcType=VARCHAR}
+	</select>
+	
+</mapper>
+
+

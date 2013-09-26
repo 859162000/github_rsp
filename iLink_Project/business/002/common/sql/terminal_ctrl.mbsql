@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="002.common.sql.terminal_ctrl">
+	<!-- 查询记录：单条和多条 -->
+	<resultMap type="map" id="terminal_ctrl_info">
+		<result property="terminal_id" column="TERMINAL_ID" javaType="string" />
+		<result property="inst_code" column="INST_CODE" javaType="string" />
+		<result property="merch_code" column="MERCH_CODE" javaType="string" />
+		<result property="virtual_operator" column="VIRTUAL_OPERATOR"
+			javaType="string" />
+		<result property="ip" column="IP" javaType="string" />
+		<result property="tran_phone1" column="TRAN_PHONE1" javaType="string" />
+		<result property="tran_phone2" column="TRAN_PHONE2" javaType="string" />
+		<result property="tran_phone3" column="TRAN_PHONE3" javaType="string" />
+		<result property="manage_phone" column="MANAGE_PHONE" javaType="string" />
+		<result property="tip_flag" column="TIP_FLAG" javaType="string" />
+		<result property="tip_perc" column="TIP_PERC" javaType="int" />
+		<result property="manul_input_flag" column="MANUL_INPUT_FLAG"
+			javaType="string" />
+		<result property="auto_signout_flag" column="AUTO_SIGNOUT_FLAG"
+			javaType="string" />
+		<result property="using_cond" column="USING_COND" javaType="string" />
+		<result property="tran_sate" column="TRAN_SATE" javaType="string" />
+		<result property="download_flag" column="DOWNLOAD_FLAG"
+			javaType="string" />
+		<result property="param_mod" column="PARAM_MOD" javaType="string" />
+		<result property="permis_curr" column="PERMIS_CURR" javaType="string" />
+		<result property="privilage_flag" column="PRIVILAGE_FLAG"
+			javaType="string" />
+		<result property="batch_no" column="BATCH_NO" javaType="string" />
+		<result property="batch_update_flag" column="BATCH_UPDATE_FLAG"
+			javaType="string" />
+		<result property="settle_type" column="SETTLE_TYPE" javaType="string" />
+		<result property="trxn_flag" column="TRXN_FLAG" javaType="string" />
+		<result property="creator" column="CREATOR" javaType="string" />
+		<result property="gmt_create" column="GMT_CREATE" javaType="string" />
+		<result property="modifier" column="MODIFIER" javaType="string" />
+		<result property="gmt_modified" column="GMT_MODIFIED" javaType="string" />
+	</resultMap>
+
+	<select id="selectOne" parameterType="string" resultMap="terminal_ctrl_info">
+		SELECT *
+		FROM ops_terminal_cntrl
+		WHERE
+		TERMINAL_ID=#{p_term_id, JDBCTYPE=VARCHAR}
+	</select>
+</mapper>
+
+

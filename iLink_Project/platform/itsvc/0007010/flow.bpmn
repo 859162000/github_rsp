@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_3-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_5-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_6-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_8-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_9-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_12-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_15-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_17-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_18-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="platform.itsvc.0007010" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <scriptTask id="_2" name="*数据准备" scriptFormat="http://www.java.com/java" >
+      <script>// 超限测试数据
+dataBus.set("test_count", 4999);</script>
+    </scriptTask>
+    <task id="_3" name="更新选中批次为准备处理状态" tns:taskName="platform.component.business.B_TRAN_UPDATE" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <script>dataBus.set("bat_stat", "01");</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_3_tableNameInput" name="tableName" />
+        <dataInput id="_3_switchFlagInput" name="switchFlag" />
+        <dataInput id="_3_updateKeySetInput" name="updateKeySet" />
+        <dataInput id="_3_dataBusInput" name="dataBus" />
+        <dataInput id="_3_componentIdInput" name="componentId" />
+        <dataOutput id="_3_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_3_tableNameInput</dataInputRefs>
+          <dataInputRefs>_3_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_3_updateKeySetInput</dataInputRefs>
+          <dataInputRefs>_3_dataBusInput</dataInputRefs>
+          <dataInputRefs>_3_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_3_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"biz_batch_main"</sourceRef>
+        <targetRef>_3_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_3_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"bat_stat"</sourceRef>
+        <targetRef>_3_updateKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_3_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_3_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_3_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_4" name="分支" gatewayDirection="Diverging" />
+    <task id="_5" name="*查询总笔数" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_5_sqlTypeInput" name="sqlType" />
+        <dataInput id="_5_sqlIdInput" name="sqlId" />
+        <dataInput id="_5_dataBusInput" name="dataBus" />
+        <dataOutput id="_5_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_5_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_5_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_5_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_5_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_5_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"sqlid"</sourceRef>
+        <targetRef>_5_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_5_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_5_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_6" name="更新批次状态为暂停" tns:taskName="platform.component.business.B_TRAN_UPDATE" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <script>dataBus.set("bat_stat", "10");</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_6_tableNameInput" name="tableName" />
+        <dataInput id="_6_switchFlagInput" name="switchFlag" />
+        <dataInput id="_6_updateKeySetInput" name="updateKeySet" />
+        <dataInput id="_6_dataBusInput" name="dataBus" />
+        <dataInput id="_6_componentIdInput" name="componentId" />
+        <dataOutput id="_6_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_6_tableNameInput</dataInputRefs>
+          <dataInputRefs>_6_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_6_updateKeySetInput</dataInputRefs>
+          <dataInputRefs>_6_dataBusInput</dataInputRefs>
+          <dataInputRefs>_6_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_6_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"biz_batch_main"</sourceRef>
+        <targetRef>_6_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_6_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"bat_stat"</sourceRef>
+        <targetRef>_6_updateKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_6_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_6_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_6_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <endEvent id="_7" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_8" name="*查询是否有要上送核心的流水" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_8_sqlTypeInput" name="sqlType" />
+        <dataInput id="_8_sqlIdInput" name="sqlId" />
+        <dataInput id="_8_dataBusInput" name="dataBus" />
+        <dataOutput id="_8_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_8_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_8_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_8_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_8_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_8_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"sqlid"</sourceRef>
+        <targetRef>_8_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_8_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_8_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_9" name="更新批次状态为请求完毕" tns:taskName="platform.component.business.B_TRAN_UPDATE" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <script>dataBus.set("bat_stat", "03");</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_9_tableNameInput" name="tableName" />
+        <dataInput id="_9_switchFlagInput" name="switchFlag" />
+        <dataInput id="_9_updateKeySetInput" name="updateKeySet" />
+        <dataInput id="_9_dataBusInput" name="dataBus" />
+        <dataInput id="_9_componentIdInput" name="componentId" />
+        <dataOutput id="_9_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_9_tableNameInput</dataInputRefs>
+          <dataInputRefs>_9_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_9_updateKeySetInput</dataInputRefs>
+          <dataInputRefs>_9_dataBusInput</dataInputRefs>
+          <dataInputRefs>_9_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_9_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"biz_batch_main"</sourceRef>
+        <targetRef>_9_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_9_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"bat_stat"</sourceRef>
+        <targetRef>_9_updateKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_9_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_9_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_9_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_12" name="*更新选中明细为未知" tns:taskName="platform.component.business.B_TRAN_UPDATE" >
+      <ioSpecification>
+        <dataInput id="_12_tableNameInput" name="tableName" />
+        <dataInput id="_12_switchFlagInput" name="switchFlag" />
+        <dataInput id="_12_updateKeySetInput" name="updateKeySet" />
+        <dataInput id="_12_dataBusInput" name="dataBus" />
+        <dataInput id="_12_componentIdInput" name="componentId" />
+        <dataOutput id="_12_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_12_tableNameInput</dataInputRefs>
+          <dataInputRefs>_12_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_12_updateKeySetInput</dataInputRefs>
+          <dataInputRefs>_12_dataBusInput</dataInputRefs>
+          <dataInputRefs>_12_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_12_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("t_detailtable_name")</sourceRef>
+        <targetRef>_12_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_12_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"业务要素1;业务要素2"</sourceRef>
+        <targetRef>_12_updateKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_12_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_12_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_12_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_13" name="分支" gatewayDirection="Diverging" />
+    <callActivity id="_14" name="*客户信息校验" calledElement="platform.itsvc.0009000" >
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+    </callActivity>
+    <task id="_15" name="*后台请求组件[核心记账请求]" tns:taskName="platform.component.business.B_SERVICE_REQUEST" >
+      <ioSpecification>
+        <dataInput id="_15_targetAdapterIdInput" name="targetAdapterId" />
+        <dataInput id="_15_outTranCodeInput" name="outTranCode" />
+        <dataInput id="_15_dataBusInput" name="dataBus" />
+        <dataInput id="_15_targetChannelCodeInput" name="targetChannelCode" />
+        <dataOutput id="_15_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_15_targetAdapterIdInput</dataInputRefs>
+          <dataInputRefs>_15_outTranCodeInput</dataInputRefs>
+          <dataInputRefs>_15_dataBusInput</dataInputRefs>
+          <dataInputRefs>_15_targetChannelCodeInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_15_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"目标适配器代码"</sourceRef>
+        <targetRef>_15_targetAdapterIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"外部服务名"</sourceRef>
+        <targetRef>_15_outTranCodeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_15_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"目标渠道代码"</sourceRef>
+        <targetRef>_15_targetChannelCodeInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_15_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_17" name="*更新明细流水状态为失败" tns:taskName="platform.component.business.B_TRAN_UPDATE" >
+      <ioSpecification>
+        <dataInput id="_17_switchFlagInput" name="switchFlag" />
+        <dataInput id="_17_tableNameInput" name="tableName" />
+        <dataInput id="_17_updateKeySetInput" name="updateKeySet" />
+        <dataInput id="_17_dataBusInput" name="dataBus" />
+        <dataInput id="_17_componentIdInput" name="componentId" />
+        <dataOutput id="_17_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_17_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_17_tableNameInput</dataInputRefs>
+          <dataInputRefs>_17_updateKeySetInput</dataInputRefs>
+          <dataInputRefs>_17_dataBusInput</dataInputRefs>
+          <dataInputRefs>_17_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_17_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_17_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("t_detailtable_name")</sourceRef>
+        <targetRef>_17_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"业务要素1;业务要素2"</sourceRef>
+        <targetRef>_17_updateKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_17_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_17_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_17_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_16" name="分支" gatewayDirection="Diverging" />
+    <task id="_18" name="*更新明细流水状态成功" tns:taskName="platform.component.business.B_TRAN_UPDATE" >
+      <ioSpecification>
+        <dataInput id="_18_switchFlagInput" name="switchFlag" />
+        <dataInput id="_18_tableNameInput" name="tableName" />
+        <dataInput id="_18_updateKeySetInput" name="updateKeySet" />
+        <dataInput id="_18_dataBusInput" name="dataBus" />
+        <dataInput id="_18_componentIdInput" name="componentId" />
+        <dataOutput id="_18_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_18_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_18_tableNameInput</dataInputRefs>
+          <dataInputRefs>_18_updateKeySetInput</dataInputRefs>
+          <dataInputRefs>_18_dataBusInput</dataInputRefs>
+          <dataInputRefs>_18_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_18_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_18_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("t_detailtable_name")</sourceRef>
+        <targetRef>_18_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"业务要素1;业务要素2"</sourceRef>
+        <targetRef>_18_updateKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_18_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_18_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_18_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_21" name="合并" gatewayDirection="Converging" />
+    <scriptTask id="_20" name="处理笔数加一" scriptFormat="http://www.java.com/java" >
+      <script>int test_count = (Integer)dataBus.get("test_count");
+dataBus.set("test_count", ++test_count);</script>
+    </scriptTask>
+    <exclusiveGateway id="_23" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_22" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <intermediateCatchEvent id="_27" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_26" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <scriptTask id="_29" name="*异常处理" >
+      <script></script>
+    </scriptTask>
+    <exclusiveGateway id="_28" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_30" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+    <sequenceFlow id="_23-_4" sourceRef="_23" targetRef="_4" />
+    <sequenceFlow id="_3-_5" sourceRef="_3" targetRef="_5" />
+    <sequenceFlow id="_4-_6" sourceRef="_4" targetRef="_6" name="超限" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >int test_count = (Integer)dataBus.get("test_count");
+if(test_count &gt;= 5000) {
+	return true;
+}
+return false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_4-_8" sourceRef="_4" targetRef="_8" name="未超限" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_13-_9" sourceRef="_13" targetRef="_9" name="无" >
+      <conditionExpression xsi:type="tFormalExpression" >return false</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_13-_12" sourceRef="_13" targetRef="_12" name="有" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_8-_13" sourceRef="_8" targetRef="_13" />
+    <sequenceFlow id="_12-_14" sourceRef="_12" targetRef="_14" />
+    <sequenceFlow id="_14-_15" sourceRef="_14" targetRef="_15" />
+    <sequenceFlow id="_16-_17" sourceRef="_16" targetRef="_17" name="失败" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return false</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_15-_16" sourceRef="_15" targetRef="_16" />
+    <sequenceFlow id="_16-_18" sourceRef="_16" targetRef="_18" name="成功" >
+      <conditionExpression xsi:type="tFormalExpression" >return true</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_18-_21" sourceRef="_18" targetRef="_21" />
+    <sequenceFlow id="_17-_21" sourceRef="_17" targetRef="_21" />
+    <sequenceFlow id="_16-_21" sourceRef="_16" targetRef="_21" name="超时" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" >return true</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_21-_20" sourceRef="_21" targetRef="_20" />
+    <sequenceFlow id="_5-_23" sourceRef="_5" targetRef="_23" />
+    <sequenceFlow id="_20-_23" sourceRef="_20" targetRef="_23" />
+    <sequenceFlow id="_9-_22" sourceRef="_9" targetRef="_22" />
+    <sequenceFlow id="_28-_29" sourceRef="_28" targetRef="_29" />
+    <sequenceFlow id="_26-_28" sourceRef="_26" targetRef="_28" />
+    <sequenceFlow id="_27-_28" sourceRef="_27" targetRef="_28" />
+    <sequenceFlow id="_29-_30" sourceRef="_29" targetRef="_30" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="platform.itsvc.0007010" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="79" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="16" y="97" width="175" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="85" y="178" width="186" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="305" y="420" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="203" y="259" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="124" y="501" width="174" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="187" y="582" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="330" y="501" width="201" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="216" y="663" width="201" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="449" y="663" width="153" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="406" y="582" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" >
+        <dc:Bounds x="425" y="743" width="201" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15" >
+        <dc:Bounds x="552" y="823" width="200" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_17" >
+        <dc:Bounds x="223" y="97" width="175" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="607" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18" >
+        <dc:Bounds x="430" y="97" width="175" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_21" >
+        <dc:Bounds x="493" y="178" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_20" >
+        <dc:Bounds x="373" y="259" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" >
+        <dc:Bounds x="305" y="339" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_22" >
+        <dc:Bounds x="292" y="743" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_27" >
+        <dc:Bounds x="710" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_26" >
+        <dc:Bounds x="790" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_29" >
+        <dc:Bounds x="687" y="178" width="175" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_28" >
+        <dc:Bounds x="750" y="97" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_30" >
+        <dc:Bounds x="750" y="259" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="103" y="40" />
+        <di:waypoint x="103" y="121" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="103" y="121" />
+        <di:waypoint x="178" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-_4" >
+        <di:waypoint x="329" y="363" />
+        <di:waypoint x="329" y="444" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_5" >
+        <di:waypoint x="178" y="202" />
+        <di:waypoint x="253" y="283" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_6" >
+        <di:waypoint x="329" y="444" />
+        <di:waypoint x="211" y="525" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="211" y="525" />
+        <di:waypoint x="211" y="606" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_8" >
+        <di:waypoint x="329" y="444" />
+        <di:waypoint x="430" y="525" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_9" >
+        <di:waypoint x="430" y="606" />
+        <di:waypoint x="316" y="687" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_12" >
+        <di:waypoint x="430" y="606" />
+        <di:waypoint x="525" y="687" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_13" >
+        <di:waypoint x="430" y="525" />
+        <di:waypoint x="430" y="606" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_14" >
+        <di:waypoint x="525" y="687" />
+        <di:waypoint x="525" y="767" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14-_15" >
+        <di:waypoint x="525" y="767" />
+        <di:waypoint x="652" y="847" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_17" >
+        <di:waypoint x="631" y="40" />
+        <di:waypoint x="310" y="121" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-_16" >
+        <di:waypoint x="652" y="847" />
+        <di:waypoint x="631" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_18" >
+        <di:waypoint x="631" y="40" />
+        <di:waypoint x="517" y="121" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_18-_21" >
+        <di:waypoint x="517" y="121" />
+        <di:waypoint x="517" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_21" >
+        <di:waypoint x="310" y="121" />
+        <di:waypoint x="517" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_21" >
+        <di:waypoint x="631" y="40" />
+        <di:waypoint x="517" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_21-_20" >
+        <di:waypoint x="517" y="202" />
+        <di:waypoint x="423" y="283" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_23" >
+        <di:waypoint x="253" y="283" />
+        <di:waypoint x="329" y="363" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_20-_23" >
+        <di:waypoint x="423" y="283" />
+        <di:waypoint x="329" y="363" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_22" >
+        <di:waypoint x="316" y="687" />
+        <di:waypoint x="316" y="767" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_29" >
+        <di:waypoint x="774" y="121" />
+        <di:waypoint x="774" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26-_28" >
+        <di:waypoint x="814" y="40" />
+        <di:waypoint x="774" y="121" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_27-_28" >
+        <di:waypoint x="734" y="40" />
+        <di:waypoint x="774" y="121" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29-_30" >
+        <di:waypoint x="774" y="202" />
+        <di:waypoint x="774" y="283" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

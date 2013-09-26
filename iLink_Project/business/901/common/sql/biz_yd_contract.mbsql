@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="901.common.sql.biz_yd_contract">
+	<!-- 增加记录 -->	
+	<insert id="insert" parameterType="map">
+		insert into biz_yd_contract
+		values
+		(
+			serial_no.nextval,
+			#{p_biz_seqno,	jdbcType=INTEGER},
+			#{crp_id,		jdbcType=VARCHAR},
+			#{sub_biztype,	jdbcType=VARCHAR},
+			#{crp_nam,		jdbcType=VARCHAR},
+			#{third_add,	jdbcType=VARCHAR},
+			#{third_post,	jdbcType=VARCHAR},
+			#{third_con,	jdbcType=VARCHAR},
+			#{third_tel,	jdbcType=VARCHAR},
+			#{contract_no,	jdbcType=VARCHAR},
+			#{work_date,	jdbcType=VARCHAR},
+			#{bus_mode,		jdbcType=VARCHAR},
+			#{bat_type,		jdbcType=VARCHAR},
+			#{oprinn_acc1,	jdbcType=VARCHAR},
+			#{cracc_no1,	jdbcType=VARCHAR},
+			#{cracc_name1,	jdbcType=VARCHAR},
+			#{opr_teller1,	jdbcType=VARCHAR},
+			#{oprinn_acc2,	jdbcType=VARCHAR},
+			#{cracc_no2,	jdbcType=VARCHAR},
+			#{cracc_name2,	jdbcType=VARCHAR},
+			#{opr_teller2,	jdbcType=VARCHAR},
+			#{oprinn_acc3,	jdbcType=VARCHAR},
+			#{cracc_no3,	jdbcType=VARCHAR},
+			#{cracc_name3,	jdbcType=VARCHAR},
+			#{opr_teller3,	jdbcType=VARCHAR},
+			#{note1,		jdbcType=VARCHAR},
+			#{note2,		jdbcType=VARCHAR},
+			#{note3,		jdbcType=VARCHAR},
+			#{note4,		jdbcType=VARCHAR},
+			'1')
+		)
+	</insert>
+	
+	<!-- 更新记录 -->	
+	<update id="update" parameterType="map">
+		update biz_yd_contract set
+			<foreach collection="t_subtable_upcolumns" index="index" item="item" separator=",">
+				#{item} = ${#{item}}
+			</foreach>
+		where 
+			SERIAL_NO =#{serial_no,	jdbcType=INTEGER}
+	</update>
+	
+	<!-- 解约 -->	
+	<update id="update_1" parameterType="map">
+		update biz_yd_contract set
+			#{t_subtable_rmcolumns} = '0'
+		where 
+			SERIAL_NO =#{serial_no,	jdbcType=INTEGER}
+	</update>
+	
+	<!-- get serial no -->	
+	<select id="getSerialNo" resultType="map">
+		select to_char(SERIALNO.nextval) as serial_no from dual
+	</select>
+	
+	<select id="select_contract_sub" resultType="map">
+		<if test='"0".equals(function)'>
+			select to_char(b.serial_no) as cm_serialno,b.crp_id,b.third_cusno,b.crp_nam,b.third_add,b.third_post,b.third_con,b.third_tel,b.contract_no,b.work_date,b.bus_mode,b.bat_type,b.oprinn_acc1,b.cracc_no1,b.cracc_name1,b.opr_teller1,b.oprinn_acc2,b.cracc_no2,b.cracc_name2,b.opr_teller2,b.oprinn_acc3,b.cracc_no3,b.cracc_name3,b.opr_teller3
+			from biz_yd_contract b where b.crp_id = #{crp_id, jdbcType=VARCHAR}
+		</if>
+		<if test='!"0".equals(function)'>
+			select to_char(b.serial_no) as cm_serialno  from biz_yd_contract b where b.crp_id = #{crp_id, jdbcType=VARCHAR}
+		</if>
+	</select>
+	 
+</mapper>
+
+

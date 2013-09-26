@@ -1,0 +1,20 @@
+
+//list any import classes here.
+import com.eastcom.ilink.common.databus.DataBus;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRule;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRuleParam;
+
+
+//declare any global variables here
+
+
+rule "002.0025105.rule.0025105_rule1" 
+
+    when
+        //conditions
+        dataBus : DataBus()
+    then
+        //actions
+
+end
+

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.common.sql.biz_main_dtl">
+
+    <!-- 从sequence获取序号作为账务流水号 -->
+    <!--  
+    <select id="getSerialNO" parameterType="map" resultMap="map">
+		Select BIZ_SERIALNO_SEQ.nextval as serial_no from dual
+	</select>
+	-->
+
+   	<!-- 增加记录 -->	
+	<insert id="insert_biz_main_dtl" parameterType="map">
+		INSERT INTO BIZ_MAIN_DTL
+		(
+			WORK_DATE,
+			SERIAL_NO,
+			P_BIZ_SEQNO,
+			P_SUBSYS_CODE,
+			SUB_BIZTYPE,
+			TRANS_CODE,
+			CHANNEL_CODE,
+			CHANNEL_DATE,
+			CHANNEL_SEQ,
+			WORK_TIME,
+			ZONENO,
+			BRNO,	   
+			TELLERNO,
+			CHKTELLERNO,
+			AUTHTELLERNO,	   
+			AUTHTELLERNO2,
+			REVTRANF,
+			CURRENCY,
+			AMOUNT,
+			PAYER_ACCBANK,
+			PAYER_ACC,
+			PAYER_NAME,
+			PAYEE_ACCBANK,
+			PAYEE_ACC,
+			PAYEE_NAME,
+			FEE_AMOUNT,
+			THIRD_ID,
+			THIRD_SYSDATE,
+			THIRD_SYSSEQ,
+			THIRD_SYSSTATUS,
+			THIRD_SYSMSG,
+			BANK_SYSDATE,
+			BANK_SYSSEQ,
+			BANK_SYSSTATUS,
+			BANK_SYSERRCODE,
+			BANK_SYSERRMSG,
+			TRADE_STATUS,
+			THIRD_CHKFLAG,
+			BANK_CHKFLAG,
+			TRADE_STEP,
+			TRADE_BUSISTEP,
+			TRANS_FLAG,
+			MB_FLAG,
+			CB_FLG, 
+			VOUCH_TYPE,   
+			VOUCH_NO,   
+			TCUS_ID,
+			TCUS_NAM,
+			PKG_ENTRUSTDATE,
+			PKG_NO,
+			NOTE1,
+			NOTE2,
+			NOTE3,
+			NOTE4,
+			NOTE5
+		)
+		VALUES
+		(
+			#{work_date		   				, jdbcType=CHAR},
+			<!-- #{serial_no		   				, jdbcType=VARCHAR},  -->
+			BIZ_SERIALNO_SEQ.nextval,
+			#{p_biz_seqno		   			, jdbcType=VARCHAR},
+			#{p_subsys_code		   	        , jdbcType=VARCHAR},
+			#{sub_biztype	            	, jdbcType=VARCHAR},
+			#{trans_code        	        , jdbcType=CHAR},
+			#{channel_code                  , jdbcType=CHAR},
+			#{channel_date      	        , jdbcType=CHAR},
+			#{channel_seq       	       	, jdbcType=VARCHAR},
+			#{work_time         		   	, jdbcType=VARCHAR},
+			#{zoneno            	       	, jdbcType=VARCHAR},
+			#{brno	   	                    , jdbcType=VARCHAR},
+			#{tellerno          	       	, jdbcType=CHAR},
+			#{chktellerno	       	        , jdbcType=CHAR},
+			#{authtellerno	   	            , jdbcType=CHAR},
+			#{authtellerno2	                , jdbcType=CHAR},
+			#{revtranf	                    , jdbcType=CHAR},
+			#{currency	                    , jdbcType=VARCHAR},
+			#{amount	       	            , jdbcType=CHAR},
+			#{payer_accbank	            	, jdbcType=VARCHAR},
+			#{payer_acc	,                   jdbcType=VARCHAR},
+			#{payer_name,                   jdbcType=VARCHAR},
+			#{payee_accbank             , jdbcType=VARCHAR},
+			#{payee_acc            , jdbcType=VARCHAR},
+			#{payee_name           , jdbcType=VARCHAR},
+			#{fee_amount           , jdbcType=VARCHAR},
+			#{third_id             , jdbcType=VARCHAR},
+			#{third_sysdate        , jdbcType=CHAR},
+			#{third_sysseq         , jdbcType=VARCHAR},
+			#{third_sysstatus       , jdbcType=CHAR},
+			#{third_sysmsg, jdbcType=VARCHAR},
+			#{bank_sysdate, jdbcType=CHAR},
+			#{bank_sysseq, jdbcType=VARCHAR},
+			#{bank_sysstatus      ,	  jdbcType=CHAR},
+			#{bank_syserrcode,	  jdbcType=VARCHAR},
+			#{bank_syserrmsg,	  jdbcType=VARCHAR},
+			#{trade_status,	  jdbcType=CHAR},
+			#{third_chkflag,	  jdbcType=CHAR},
+			#{bank_chkflag,	  jdbcType=CHAR},
+			#{trade_step, 	  jdbcType=VARCHAR},
+		    #{trade_busistep, 	  jdbcType=VARCHAR},
+		    #{trans_flag, 	  jdbcType=CHAR},
+		    #{mb_flag, 	  jdbcType=CHAR},
+		    #{cb_flg, 	  jdbcType=CHAR},
+		    #{vouch_type, 	  jdbcType=VARCHAR},
+		    #{vouch_no, 	  jdbcType=VARCHAR},
+		    #{tcus_id, 	  jdbcType=VARCHAR},
+		    #{tcus_name, 	  jdbcType=VARCHAR},
+		    #{pkg_entrustdate, 	  jdbcType=VARCHAR},
+		    #{pkg_no, 	  jdbcType=VARCHAR},
+		    #{note1, 	  jdbcType=VARCHAR},
+		    #{note2, 	  jdbcType=VARCHAR},
+		    #{note3, 	  jdbcType=VARCHAR},
+		    #{note4, 	  jdbcType=VARCHAR},		  
+			#{note5, 		jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 更新流水表的状态 -->
+		<update id="update_biz_main_dtl" parameterType="map">
+		UPDATE BIZ_MAIN_DTL SET
+			BANK_SYSDATE = #{bank_sysdate, jdbcType=CHAR},
+			BANK_SYSSEQ = #{bank_sysseq, jdbcType=VARCHAR},
+			BANK_SYSSTATUS = #{bank_sysstatus, jdbcType=CHAR},
+			BANK_SYSERRCODE = #{bank_syserrcode, jdbcType=VARCHAR},
+			BANK_SYSERRMSG = #{bank_syserrmsg, jdbcType=VARCHAR},
+			THIRD_ID =  #{third_id, jdbcType=VARCHAR},<!-- 第三方标识 -->
+			THIRD_SYSDATE =  #{third_sysdate, jdbcType=CHAR},<!-- 第三方受理日期 -->
+			THIRD_SYSSEQ =  #{third_sysseq, jdbcType=VARCHAR},<!-- 第三方受理序号 -->
+			THIRD_SYSSTATUS =  #{third_sysstatus, jdbcType=CHAR},<!-- 第三方受理状态 -->	  			
+			TRADE_STATUS = #{trade_status, jdbcType=CHAR}
+		WHERE 
+			P_BIZ_SEQNO = #{p_biz_seqno, jdbcType=VARCHAR}
+	</update>
+	 
+	 
+</mapper>
+
+

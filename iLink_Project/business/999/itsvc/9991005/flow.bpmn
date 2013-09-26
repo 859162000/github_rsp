@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_16-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_19-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_18-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_20-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_14-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_15-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="999.itsvc.9991005" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <scriptTask id="_17" name="脚本" scriptFormat="http://www.java.com/java" >
+      <script>dataBus.set("status","COMPLETE");
+dataBus.set("code","000000");
+dataBus.set("desc","交易成功");</script>
+    </scriptTask>
+    <startEvent id="_1" name="StartProcess" />
+    <task id="_16" name="交易数据日志打印组件" tns:taskName="platform.component.other.P_LOG" >
+      <ioSpecification>
+        <dataInput id="_16_logKeySetInput" name="logKeySet" />
+        <dataInput id="_16_dataBusInput" name="dataBus" />
+        <dataInput id="_16_logMessageInput" name="logMessage" />
+        <dataOutput id="_16_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_16_logKeySetInput</dataInputRefs>
+          <dataInputRefs>_16_dataBusInput</dataInputRefs>
+          <dataInputRefs>_16_logMessageInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_16_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"p_req_date;p_biz_seqno"</sourceRef>
+        <targetRef>_16_logKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_16_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"-------------------1111111111111111111111111{}，{}"</sourceRef>
+        <targetRef>_16_logMessageInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_19" name="ftp数据下载核心对账文件" tns:taskName="platform.component.other.P_FTP_GET" >
+      <ioSpecification>
+        <dataInput id="_19_ftpHostIdInput" name="ftpHostId" />
+        <dataInput id="_19_dataBusInput" name="dataBus" />
+        <dataOutput id="_19_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_19_ftpHostIdInput</dataInputRefs>
+          <dataInputRefs>_19_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_19_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"002"</sourceRef>
+        <targetRef>_19_ftpHostIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_19_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_18" name="SQLLDR数据导入拆分第三方文件" tns:taskName="platform.component.other.P_SQLLDR_PROCESS" >
+      <ioSpecification>
+        <dataInput id="_18_sqlldridInput" name="sqlldrid" />
+        <dataInput id="_18_dataBusInput" name="dataBus" />
+        <dataOutput id="_18_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_18_sqlldridInput</dataInputRefs>
+          <dataInputRefs>_18_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_18_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"checkinfo"</sourceRef>
+        <targetRef>_18_sqlldridInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_18_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_18_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_20" name="SQLLDR数据导入拆分核心对账文件" tns:taskName="platform.component.other.P_SQLLDR_PROCESS" >
+      <ioSpecification>
+        <dataInput id="_20_sqlldridInput" name="sqlldrid" />
+        <dataInput id="_20_dataBusInput" name="dataBus" />
+        <dataOutput id="_20_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_20_sqlldridInput</dataInputRefs>
+          <dataInputRefs>_20_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_20_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"hostcheckinfo"</sourceRef>
+        <targetRef>_20_sqlldridInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_20_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_20_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <endEvent id="_10" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <callActivity id="_11" name="9991006[与第三方对账]" calledElement="999.itsvc.9991006" >
+      <ioSpecification>
+        <dataInput id="_11_dataBusInput" name="dataBus" />
+        <dataOutput id="_11_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_11_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_11_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_11_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <callActivity id="_12" name="9991007[对核心对账]" calledElement="999.itsvc.9991007" >
+      <ioSpecification>
+        <dataInput id="_12_dataBusInput" name="dataBus" />
+        <dataOutput id="_12_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_12_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_12_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_12_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_12_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <callActivity id="_13" name="9991008[记录差错流水]" calledElement="999.itsvc.9991008" >
+      <ioSpecification>
+        <dataInput id="_13_dataBusInput" name="dataBus" />
+        <dataOutput id="_13_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_13_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_13_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_13_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_13_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <task id="_14" name="ftp数据下载第三方对账文件" tns:taskName="platform.component.other.P_FTP_GET" >
+      <ioSpecification>
+        <dataInput id="_14_ftpHostIdInput" name="ftpHostId" />
+        <dataInput id="_14_dataBusInput" name="dataBus" />
+        <dataOutput id="_14_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_14_ftpHostIdInput</dataInputRefs>
+          <dataInputRefs>_14_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_14_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"001"</sourceRef>
+        <targetRef>_14_ftpHostIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_14_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_14_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_15" name="交易数据日志打印组件" tns:taskName="platform.component.other.P_LOG" >
+      <ioSpecification>
+        <dataInput id="_15_logKeySetInput" name="logKeySet" />
+        <dataInput id="_15_dataBusInput" name="dataBus" />
+        <dataInput id="_15_logMessageInput" name="logMessage" />
+        <dataOutput id="_15_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_15_logKeySetInput</dataInputRefs>
+          <dataInputRefs>_15_dataBusInput</dataInputRefs>
+          <dataInputRefs>_15_logMessageInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_15_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"p_req_date;p_biz_seqno"</sourceRef>
+        <targetRef>_15_logKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_15_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"--------------------------------ftp------------------{}，{}"</sourceRef>
+        <targetRef>_15_logMessageInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_15_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_13-_17" sourceRef="_13" targetRef="_17" />
+    <sequenceFlow id="_18-_16" sourceRef="_18" targetRef="_16" />
+    <sequenceFlow id="_11-_19" sourceRef="_11" targetRef="_19" />
+    <sequenceFlow id="_14-_18" sourceRef="_14" targetRef="_18" />
+    <sequenceFlow id="_19-_20" sourceRef="_19" targetRef="_20" />
+    <sequenceFlow id="_17-_10" sourceRef="_17" targetRef="_10" />
+    <sequenceFlow id="_16-_11" sourceRef="_16" targetRef="_11" />
+    <sequenceFlow id="_20-_12" sourceRef="_20" targetRef="_12" />
+    <sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13" />
+    <sequenceFlow id="_15-_14" sourceRef="_15" targetRef="_14" />
+    <sequenceFlow id="_1-_15" sourceRef="_1" targetRef="_15" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="999.itsvc.9991005" >
+      <bpmndi:BPMNShape bpmnElement="_17" >
+        <dc:Bounds x="157" y="816" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="173" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="76" y="336" width="243" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" >
+        <dc:Bounds x="73" y="496" width="248" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18" >
+        <dc:Bounds x="32" y="256" width="330" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_20" >
+        <dc:Bounds x="50" y="576" width="294" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="173" y="896" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="111" y="416" width="172" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="111" y="656" width="173" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="109" y="736" width="176" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" >
+        <dc:Bounds x="16" y="176" width="362" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15" >
+        <dc:Bounds x="49" y="96" width="297" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_13-_17" >
+        <di:waypoint x="197" y="760" />
+        <di:waypoint x="197" y="840" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_18-_16" >
+        <di:waypoint x="197" y="280" />
+        <di:waypoint x="197" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11-_19" >
+        <di:waypoint x="197" y="440" />
+        <di:waypoint x="197" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14-_18" >
+        <di:waypoint x="197" y="200" />
+        <di:waypoint x="197" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_20" >
+        <di:waypoint x="197" y="520" />
+        <di:waypoint x="197" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_10" >
+        <di:waypoint x="197" y="840" />
+        <di:waypoint x="197" y="920" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_11" >
+        <di:waypoint x="197" y="360" />
+        <di:waypoint x="197" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_20-_12" >
+        <di:waypoint x="197" y="600" />
+        <di:waypoint x="197" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_13" >
+        <di:waypoint x="197" y="680" />
+        <di:waypoint x="197" y="760" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-_14" >
+        <di:waypoint x="197" y="120" />
+        <di:waypoint x="197" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_15" >
+        <di:waypoint x="197" y="40" />
+        <di:waypoint x="197" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

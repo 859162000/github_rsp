@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="监控处理组件" desc="监控处理组件"> 
+  <params> 
+    <!--表示组件需要的外部传入的参数 -->  
+    <variable name="monitorId" type="string" displayname="监控对象IDs(用;分割多个ID组成)" defvalue="监控对象ID1;监控对象ID2"/>  
+     
+  </params>  
+  <results> 
+     
+  </results> 
+</root>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="901.common.sql.biz_yd_transeq">
+	<!-- 查询记录：单条和多条 -->	
+	<resultMap type="map" id="resulttest">
+		<result property="FLD_NUMBER" 	column="FLD_NUMBER"  	javaType="int"/>
+		<result property="FLD_VARCHAR" 	column="FLD_VARCHAR" 	javaType="string"/>
+		<result property="FLD_DATE" 	column="FLD_DATE"		javaType="date"/>
+		<result property="FLD_INTEGER" 	column="FLD_INTEGER"  	javaType="int"/>
+		<result property="FLD_DOUBLE" 	column="FLD_DOUBLE"  	javaType="double"/>
+		<result property="FLD_LONG" 	column="FLD_LONG"  		javaType="long"/>
+		<result property="FLD_CHAR" 	column="FLD_CHAR"  		javaType="string"/>
+		<result property="FLD_BLOB" 	column="FLD_BLOB"  		javaType="[B"/>
+		<result property="FLD_CLOB" 	column="FLD_CLOB"  		javaType="string"/>
+		<result property="FLD_FLOAT" 	column="FLD_FLOAT"  	javaType="float"/>
+		<result property="FLD_TIMESTAMP" column="FLD_TIMESTAMP" javaType="date"/>
+	</resultMap>	
+	<select id="selectOne" parameterType="map" resultMap="resulttest">
+		select * from test 
+		where
+			FLD_NUMBER=#{FLD_NUMBER, jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectAll" parameterType="map" resultMap="resulttest">
+		select * from test 
+		where
+			FLD_NUMBER=#{FLD_NUMBER, jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectCount" parameterType="map" resultMap="resulttest">
+		select count(*) as record_count from biz_yd_transeq 
+	</select>
+	
+	<!-- 增加记录 -->	
+	<insert id="insertInfo" parameterType="map">
+		insert into test
+		values
+		(
+			#{FLD_NUMBER,	jdbcType=INTEGER},
+			#{FLD_VARCHAR,	jdbcType=VARCHAR},
+			#{FLD_DATE,		jdbcType=DATE},
+			#{FLD_INTEGER,	jdbcType=INTEGER},
+			#{FLD_DOUBLE,	jdbcType=DOUBLE},
+			#{FLD_LONG,		jdbcType=INTEGER},
+			#{FLD_CHAR,		jdbcType=CHAR},
+			#{FLD_BLOB,		jdbcType=BLOB},
+			#{FLD_CLOB,		jdbcType=CLOB},
+			#{FLD_FLOAT,	jdbcType=FLOAT},
+			#{FLD_TIMESTAMP,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<!-- 删除记录 -->	
+	<delete id="delectOne" parameterType="map">
+		delete from test
+		where
+			FLD_NUMBER=#{FLD_NUMBER,	jdbcType=INTEGER}
+	</delete>
+	<!-- 更新记录 -->	
+	<update id="updateOne" parameterType="map">
+		update test set
+			FLD_VARCHAR=#{FLD_VARCHAR,	jdbcType=VARCHAR},
+			FLD_DATE=#{FLD_DATE,		jdbcType=DATE},
+			FLD_INTEGER=#{FLD_INTEGER,	jdbcType=INTEGER} 
+		where 
+			FLD_NUMBER=#{FLD_NUMBER,	jdbcType=INTEGER}
+	</update>
+	
+	<!-- 存储过程调用 -->	
+	<resultMap id="paraListResult" type="map">
+		<result property="value1" column="value1" javaType="string"/>
+		<result property="value2" column="value2" javaType="int"/>
+		<result property="value3" column="value3" javaType="long"/>
+		<result property="value4" column="value4" javaType="[B"/>
+		<result property="value5" column="value5" javaType="date"/>
+		<result property="value6" column="value6" javaType="int"/>
+	</resultMap>
+	<select id="get_userid_and_brchno" resultType="map" statementType="CALLABLE">
+		{call pkg_test.test_proc(
+			#{subsys, mode=IN, jdbcType=VARCHAR},
+			#{systp1, mode=IN, jdbcType=VARCHAR},
+			#{systp2, mode=IN, jdbcType=VARCHAR},
+			#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=paraListResult},
+			#{retCode, mode=OUT, javaType=string},
+			#{retParas, mode=OUT, javaType=string}
+		) }
+	</select>
+	 
+</mapper>
+
+

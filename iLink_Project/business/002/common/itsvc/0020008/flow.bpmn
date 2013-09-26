@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_4-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_6-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="002.common.itsvc.0020008" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_3" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_4" name="sql组件" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_4_sqlTypeInput" name="sqlType" />
+        <dataInput id="_4_returnKeyInput" name="returnKey" />
+        <dataInput id="_4_sqlIdInput" name="sqlId" />
+        <dataInput id="_4_dataBusInput" name="dataBus" />
+        <dataInput id="_4_componentIdInput" name="componentId" />
+        <dataOutput id="_4_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_4_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_4_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_4_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_4_dataBusInput</dataInputRefs>
+          <dataInputRefs>_4_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_4_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_4_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"terminal_ctrl"</sourceRef>
+        <targetRef>_4_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"002.common.sql.terminal_ctrl.selectOne"</sourceRef>
+        <targetRef>_4_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_4_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"select_term_ctrl"</sourceRef>
+        <targetRef>_4_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_5" name="同步批次号" scriptFormat="http://www.java.com/java" >
+      <script>if (dataBus.getList("terminal_ctrl").isEmpty() || dataBus.get("terminal_ctrl[0]") == null) {
+	System.err.println("管理类交易规则(签退交易),找不到相关信息");
+	dataBus.set("p_front_resp_code", "03");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+} else {
+	dataBus.set("batch_no", dataBus.get("terminal_ctrl[0].batch_no"));
+}</script>
+    </scriptTask>
+    <task id="_6" name="密钥生成组件" tns:taskName="platform.component.security.S_KEY_CREATE" >
+      <ioSpecification>
+        <dataInput id="_6_switchFlagInput" name="switchFlag" />
+        <dataInput id="_6_componentIdInput" name="componentId" />
+        <dataInput id="_6_saveTypeInput" name="saveType" />
+        <dataInput id="_6_printSignInput" name="printSign" />
+        <dataInput id="_6_algorithmInput" name="algorithm" />
+        <dataInput id="_6_keyTypeInput" name="keyType" />
+        <dataInput id="_6_platformTypeInput" name="platformType" />
+        <dataInput id="_6_encryptedKeyInput" name="encryptedKey" />
+        <dataInput id="_6_compCountInput" name="compCount" />
+        <dataInput id="_6_keyGroupInput" name="keyGroup" />
+        <dataInput id="_6_dataBusInput" name="dataBus" />
+        <dataInput id="_6_encryptedKeyCKInput" name="encryptedKeyCK" />
+        <dataInput id="_6_encKeyTypeInput" name="encKeyType" />
+        <dataOutput id="_6_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_6_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_6_componentIdInput</dataInputRefs>
+          <dataInputRefs>_6_saveTypeInput</dataInputRefs>
+          <dataInputRefs>_6_printSignInput</dataInputRefs>
+          <dataInputRefs>_6_algorithmInput</dataInputRefs>
+          <dataInputRefs>_6_keyTypeInput</dataInputRefs>
+          <dataInputRefs>_6_platformTypeInput</dataInputRefs>
+          <dataInputRefs>_6_encryptedKeyInput</dataInputRefs>
+          <dataInputRefs>_6_compCountInput</dataInputRefs>
+          <dataInputRefs>_6_keyGroupInput</dataInputRefs>
+          <dataInputRefs>_6_dataBusInput</dataInputRefs>
+          <dataInputRefs>_6_encryptedKeyCKInput</dataInputRefs>
+          <dataInputRefs>_6_encKeyTypeInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_6_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"false"</sourceRef>
+        <targetRef>_6_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"encrypt_key_generate"</sourceRef>
+        <targetRef>_6_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ILINK"</sourceRef>
+        <targetRef>_6_saveTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_6_printSignInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"DES_ECB_8"</sourceRef>
+        <targetRef>_6_algorithmInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"DEK"</sourceRef>
+        <targetRef>_6_keyTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"SOFT"</sourceRef>
+        <targetRef>_6_platformTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_6_encryptedKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_6_compCountInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("ilink_sn")</sourceRef>
+        <targetRef>_6_keyGroupInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_6_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_6_encryptedKeyCKInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"DEK"</sourceRef>
+        <targetRef>_6_encKeyTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_6_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_7" name="获取POS中心时间" scriptFormat="http://www.java.com/java" >
+      <script>// 12.受卡方系统所在时间
+dataBus.set("term_time", dataBus.get("p_req_time"));
+// 13.受卡方系统所在日期
+dataBus.set("term_date", ((String)dataBus.get("p_req_date")).substring(4));</script>
+    </scriptTask>
+    <intermediateCatchEvent id="_8" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_9" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <exclusiveGateway id="_10" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_11" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <callActivity id="_12" name="[POS异常]" calledElement="002.common.itsvc.0020002" >
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+    </callActivity>
+
+    <!-- connections -->
+    <sequenceFlow id="_7-_3" sourceRef="_7" targetRef="_3" />
+    <sequenceFlow id="_1-_4" sourceRef="_1" targetRef="_4" />
+    <sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5" />
+    <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" />
+    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
+    <sequenceFlow id="_12-_11" sourceRef="_12" targetRef="_11" />
+    <sequenceFlow id="_10-_12" sourceRef="_10" targetRef="_12" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="002.common.itsvc.0020008" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="64" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="64" y="417" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="38" y="96" width="100" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="30" y="177" width="117" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="38" y="257" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="16" y="337" width="144" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="170" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="250" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="210" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="210" y="257" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="179" y="177" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_7-_3" >
+        <di:waypoint x="88" y="361" />
+        <di:waypoint x="88" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_4" >
+        <di:waypoint x="88" y="40" />
+        <di:waypoint x="88" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_5" >
+        <di:waypoint x="88" y="120" />
+        <di:waypoint x="88" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_6" >
+        <di:waypoint x="88" y="201" />
+        <di:waypoint x="88" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="88" y="281" />
+        <di:waypoint x="88" y="361" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_10" >
+        <di:waypoint x="194" y="40" />
+        <di:waypoint x="234" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
+        <di:waypoint x="274" y="40" />
+        <di:waypoint x="234" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_11" >
+        <di:waypoint x="234" y="201" />
+        <di:waypoint x="234" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_12" >
+        <di:waypoint x="234" y="120" />
+        <di:waypoint x="234" y="201" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="901.common.sql.biz_main_dtl">
+	<!-- 查询记录：单条和多条 -->	
+	<select id="selectList" parameterType="map" resultType="map">
+		SELECT t.* from (SELECT rownum nm, ${t_columns} FROM biz_main_dtl 
+		WHERE work_date BETWEEN ${start_date} AND ${end_date}
+		<if test='req_biz_seqno != null and !"".equals(req_biz_seqno)'>
+			AND p_biz_seqno = ${req_biz_seqno}
+		</if> 
+		<if test='req_work_date != null and !"".equals(req_work_date)'>
+			AND (work_date > ${pagekey_work_date} 
+			<if test='pagekey_biz_seqno != null and !"".equals(pagekey_biz_seqno)'>
+				 OR (work_date = ${pagekey_work_date} AND p_biz_seqno > ${pagekey_biz_seqno})
+			</if>
+			)
+		</if> 
+		order by work_date, p_biz_seqno) t
+		WHERE t.nm BETWEEN 0 AND ${perpage_size}	
+	</select>
+
+	<select id="selectCount" parameterType="map" resultType="map">
+		select to_char(count(*)) as record_count from biz_main_dtl
+		WHERE work_date BETWEEN ${start_date} AND ${end_date}
+		<if test='req_biz_seqno != null and !"".equals(req_biz_seqno)'>
+			AND p_biz_seqno = ${req_biz_seqno}
+		</if> 
+	</select>
+	
+</mapper>

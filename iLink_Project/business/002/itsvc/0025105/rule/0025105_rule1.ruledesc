@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="规则中文名称" desc="详细描述">
+	<param code="param1" desc="参数1详细描述"/>
+</root>

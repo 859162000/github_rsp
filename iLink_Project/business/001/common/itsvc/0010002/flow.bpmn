@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_3-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="001.common.itsvc.0010002" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <task id="_3" name="查询原交易码信息" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_3_dataBusInput" name="dataBus" />
+        <dataInput id="_3_componentIdInput" name="componentId" />
+        <dataOutput id="_3_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_3_dataBusInput</dataInputRefs>
+          <dataInputRefs>_3_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_3_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_3_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"queryOldTransCode"</sourceRef>
+        <targetRef>_3_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_3_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_4" name="分支" gatewayDirection="Diverging" />
+    <endEvent id="_7" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <scriptTask id="_8" name="脚本" scriptFormat="http://www.java.com/java" >
+      <script>if (dataBus.get("original_trans_code")==null) {
+	dataBus.set("p_resp_code", "9000080");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+}
+else if (dataBus.get("original_trans_code")!="授权成功") {
+	dataBus.set("p_resp_code", "确认失败");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+}
+else {
+	dataBus.set("p_resp_code", "0000000");
+	dataBus.set("p_status", "0");
+}</script>
+    </scriptTask>
+    <scriptTask id="_9" name="脚本" scriptFormat="http://www.java.com/java" >
+      <script>if (dataBus.get("original_trans_code")==null) {
+	dataBus.set("p_resp_code", "9000086");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+}
+else if (dataBus.get("original_trans_code")!="授权成功") {
+	dataBus.set("_resp_code", "冲正完成");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+}</script>
+    </scriptTask>
+    <exclusiveGateway id="_10" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_11" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_12" name="分支" gatewayDirection="Diverging" />
+    <endEvent id="_13" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_12-_3" sourceRef="_12" targetRef="_3" name="要做检查" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >System.out.println("----------dataBus:"+dataBus);
+return  "true".equals(dataBus.get("do_check_database"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4" />
+    <sequenceFlow id="_10-_7" sourceRef="_10" targetRef="_7" />
+    <sequenceFlow id="_4-_8" sourceRef="_4" targetRef="_8" name="确认交易" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "110900".equals(dataBus.get("p_channel_trans_code"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_4-_9" sourceRef="_4" targetRef="_9" name="冲正交易" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "110230".equals(dataBus.get("p_channel_trans_code"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" />
+    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
+    <sequenceFlow id="_4-_11" sourceRef="_4" targetRef="_11" name="其他" tns:priority="9" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return  (!"110230".equals(dataBus.get("p_channel_trans_code")))&amp;&amp;(!"110900".equals(dataBus.get("p_channel_trans_code")));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1-_12" sourceRef="_1" targetRef="_12" />
+    <sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13" name="否" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return !"true".equals(dataBus.get("do_check_database"));</conditionExpression>
+    </sequenceFlow>
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="001.common.itsvc.0010002" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="217" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="78" y="177" width="180" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="144" y="257" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="88" y="499" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="16" y="338" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="128" y="338" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="88" y="418" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="240" y="338" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="217" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="290" y="177" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_12-_3" >
+        <di:waypoint x="241" y="120" />
+        <di:waypoint x="168" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_4" >
+        <di:waypoint x="168" y="201" />
+        <di:waypoint x="168" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_7" >
+        <di:waypoint x="112" y="442" />
+        <di:waypoint x="112" y="523" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_8" >
+        <di:waypoint x="168" y="281" />
+        <di:waypoint x="56" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_9" >
+        <di:waypoint x="168" y="281" />
+        <di:waypoint x="168" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_10" >
+        <di:waypoint x="56" y="362" />
+        <di:waypoint x="112" y="442" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
+        <di:waypoint x="168" y="362" />
+        <di:waypoint x="112" y="442" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_11" >
+        <di:waypoint x="168" y="281" />
+        <di:waypoint x="264" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_12" >
+        <di:waypoint x="241" y="40" />
+        <di:waypoint x="241" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_13" >
+        <di:waypoint x="241" y="120" />
+        <di:waypoint x="314" y="201" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

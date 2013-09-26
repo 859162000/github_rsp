@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="ATMP后台授权交易模板" desc="包括的交易有存款、取款、存款重发、取款冲正、转帐、密码修改、余额查询、帐户明细查询"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

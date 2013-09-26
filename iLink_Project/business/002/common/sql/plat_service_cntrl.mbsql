@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="002.common.sql.plat_service_cntrl">
+	<resultMap type="map" id="ops_service_cntrl_info">
+		<result property="channel_id" 	column="CHANNEL_ID"  	javaType="string"/>
+		<result property="last_date" 	column="LAST_DATE" 	javaType="string"/>
+		<result property="curr_date" 	column="CURR_DATE"		javaType="string"/>
+		<result property="conn_state" 	column="CONN_STATE"  	javaType="string"/>
+		<result property="state" 	    column="STATE"  	javaType="string"/>
+		<result property="work_state" 	column="WORK_STATE"  		javaType="string"/>
+		<result property="sign_state" 	column="SIGN_STATE"  		javaType="string"/>
+		<result property="merch_cntrl_type" column="MERCH_CNTRL_TYPE" javaType="string" />
+	</resultMap>	
+
+
+	<!-- 查询记录：单条和多条 -->	
+	<select id="merchant_check" parameterType="map" resultType="string">
+		select a.merch_cntrl_type from PLAT_SERVICE_CNTRL a where a.channel_id=#{p_channel_code, jdbcType=CHAR}
+	</select>
+	
+	<select id="getServiceCntrlInfo" parameterType="map" resultMap="ops_service_cntrl_info">
+		<!-- 目标渠道暂时固定为银联前置(012) -->
+		select * from PLAT_SERVICE_CNTRL where channel_id='011'
+	</select>
+</mapper>
+
+

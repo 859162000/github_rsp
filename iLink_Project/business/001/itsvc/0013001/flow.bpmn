@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_3-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_4-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_7-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_13-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="001.itsvc.0013001" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_2" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_3" name="生成PIK" tns:taskName="platform.component.security.S_KEY_CREATE" >
+      <ioSpecification>
+        <dataInput id="_3_switchFlagInput" name="switchFlag" />
+        <dataInput id="_3_componentIdInput" name="componentId" />
+        <dataInput id="_3_saveTypeInput" name="saveType" />
+        <dataInput id="_3_printSignInput" name="printSign" />
+        <dataInput id="_3_algorithmInput" name="algorithm" />
+        <dataInput id="_3_keyTypeInput" name="keyType" />
+        <dataInput id="_3_platformTypeInput" name="platformType" />
+        <dataInput id="_3_encryptedKeyInput" name="encryptedKey" />
+        <dataInput id="_3_compCountInput" name="compCount" />
+        <dataInput id="_3_keyGroupInput" name="keyGroup" />
+        <dataInput id="_3_dataBusInput" name="dataBus" />
+        <dataInput id="_3_encryptedKeyCKInput" name="encryptedKeyCK" />
+        <dataInput id="_3_encKeyTypeInput" name="encKeyType" />
+        <dataOutput id="_3_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_3_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_3_componentIdInput</dataInputRefs>
+          <dataInputRefs>_3_saveTypeInput</dataInputRefs>
+          <dataInputRefs>_3_printSignInput</dataInputRefs>
+          <dataInputRefs>_3_algorithmInput</dataInputRefs>
+          <dataInputRefs>_3_keyTypeInput</dataInputRefs>
+          <dataInputRefs>_3_platformTypeInput</dataInputRefs>
+          <dataInputRefs>_3_encryptedKeyInput</dataInputRefs>
+          <dataInputRefs>_3_compCountInput</dataInputRefs>
+          <dataInputRefs>_3_keyGroupInput</dataInputRefs>
+          <dataInputRefs>_3_dataBusInput</dataInputRefs>
+          <dataInputRefs>_3_encryptedKeyCKInput</dataInputRefs>
+          <dataInputRefs>_3_encKeyTypeInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_3_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_3_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"create_pik"</sourceRef>
+        <targetRef>_3_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ILINK"</sourceRef>
+        <targetRef>_3_saveTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_3_printSignInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"TRIPLEDES_ECB_16"</sourceRef>
+        <targetRef>_3_algorithmInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"PIK"</sourceRef>
+        <targetRef>_3_keyTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"SOFT"</sourceRef>
+        <targetRef>_3_platformTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"pik_value"</sourceRef>
+        <targetRef>_3_encryptedKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_3_compCountInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("p_term_id")</sourceRef>
+        <targetRef>_3_keyGroupInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_3_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"pik_check_value"</sourceRef>
+        <targetRef>_3_encryptedKeyCKInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ZMK"</sourceRef>
+        <targetRef>_3_encKeyTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_3_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_4" name="生成MAK" tns:taskName="platform.component.security.S_KEY_CREATE" >
+      <ioSpecification>
+        <dataInput id="_4_switchFlagInput" name="switchFlag" />
+        <dataInput id="_4_componentIdInput" name="componentId" />
+        <dataInput id="_4_saveTypeInput" name="saveType" />
+        <dataInput id="_4_printSignInput" name="printSign" />
+        <dataInput id="_4_algorithmInput" name="algorithm" />
+        <dataInput id="_4_keyTypeInput" name="keyType" />
+        <dataInput id="_4_platformTypeInput" name="platformType" />
+        <dataInput id="_4_encryptedKeyInput" name="encryptedKey" />
+        <dataInput id="_4_compCountInput" name="compCount" />
+        <dataInput id="_4_keyGroupInput" name="keyGroup" />
+        <dataInput id="_4_dataBusInput" name="dataBus" />
+        <dataInput id="_4_encryptedKeyCKInput" name="encryptedKeyCK" />
+        <dataInput id="_4_encKeyTypeInput" name="encKeyType" />
+        <dataOutput id="_4_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_4_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_4_componentIdInput</dataInputRefs>
+          <dataInputRefs>_4_saveTypeInput</dataInputRefs>
+          <dataInputRefs>_4_printSignInput</dataInputRefs>
+          <dataInputRefs>_4_algorithmInput</dataInputRefs>
+          <dataInputRefs>_4_keyTypeInput</dataInputRefs>
+          <dataInputRefs>_4_platformTypeInput</dataInputRefs>
+          <dataInputRefs>_4_encryptedKeyInput</dataInputRefs>
+          <dataInputRefs>_4_compCountInput</dataInputRefs>
+          <dataInputRefs>_4_keyGroupInput</dataInputRefs>
+          <dataInputRefs>_4_dataBusInput</dataInputRefs>
+          <dataInputRefs>_4_encryptedKeyCKInput</dataInputRefs>
+          <dataInputRefs>_4_encKeyTypeInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_4_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_4_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"create_mak"</sourceRef>
+        <targetRef>_4_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ILINK"</sourceRef>
+        <targetRef>_4_saveTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_4_printSignInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"TRIPLEDES_ECB_16"</sourceRef>
+        <targetRef>_4_algorithmInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"MAK"</sourceRef>
+        <targetRef>_4_keyTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"SOFT"</sourceRef>
+        <targetRef>_4_platformTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"mak_value"</sourceRef>
+        <targetRef>_4_encryptedKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_4_compCountInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("p_term_id")</sourceRef>
+        <targetRef>_4_keyGroupInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_4_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"mak_check_value"</sourceRef>
+        <targetRef>_4_encryptedKeyCKInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ZMK"</sourceRef>
+        <targetRef>_4_encKeyTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_5" name="设置返回值" scriptFormat="http://www.java.com/java" >
+      <script>dataBus.set("p_front_resp_code", "00");
+String add_data = "";
+add_data+="SD";
+String pik_value = StringUtil.bytes2HexStr(dataBus.getBytes("pik_value")).toUpperCase();
+if ("1".equals(dataBus.get("des_flag"))) {
+	// 若是DES算法，只取前16位
+	pik_value=pik_value.substring(0, 16);
+}
+String pik_check_value = StringUtil.bytes2HexStr(dataBus.getBytes("pik_check_value")).toUpperCase();
+add_data+=StringUtil.fillChar(pik_value, ' ', 32, false);
+add_data+=StringUtil.fillChar(pik_check_value, ' ', 6, false);
+String mak_value = StringUtil.bytes2HexStr(dataBus.getBytes("mak_value")).toUpperCase();
+String mak_check_value = StringUtil.bytes2HexStr(dataBus.getBytes("mak_check_value")).toUpperCase();
+add_data+=StringUtil.fillChar(mak_value, ' ', 32, false);
+add_data+=StringUtil.fillChar(mak_check_value, ' ', 6, false);
+add_data+=dataBus.getString("p_req_date")+dataBus.getString("p_req_time");
+dataBus.set("add_data", add_data);</script>
+    </scriptTask>
+    <scriptTask id="_6" name="交易前处理" scriptFormat="http://www.java.com/java" >
+      <script>dataBus.set("message_type", "0830");
+
+String add_data = dataBus.getString("add_data");
+String tmp = "";
+/*tmp = add_data.substring(0, 2);
+dataBus.set("", tmp);
+tmp = add_data.substring(2, 16);
+dataBus.set("", tmp);
+tmp = add_data.substring(16, 30);
+dataBus.set("", tmp);*/
+
+/*tmp = add_data.substring(30, 31);
+if ("3".equals(tmp)) {
+	dataBus.set("des_flag", "3");
+	dataBus.set("encrypt_key_length", "16");
+}
+else {
+	dataBus.set("des_flag", "1");
+	dataBus.set("encrypt_key_length", "8");
+}
+dataBus.set("platformType", "SOFT");
+dataBus.set("saveType", "ILINK");
+dataBus.set("keyGroup", dataBus.getString("p_term_id"));*/
+</script>
+    </scriptTask>
+    <task id="_7" name="流水插入组件" tns:taskName="platform.component.business.B_TRAN_INSERT" >
+      <ioSpecification>
+        <dataInput id="_7_tableNameInput" name="tableName" />
+        <dataInput id="_7_dataBusInput" name="dataBus" />
+        <dataInput id="_7_componentIdInput" name="componentId" />
+        <dataOutput id="_7_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_7_tableNameInput</dataInputRefs>
+          <dataInputRefs>_7_dataBusInput</dataInputRefs>
+          <dataInputRefs>_7_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_7_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"biz_atmp_transeq"</sourceRef>
+        <targetRef>_7_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_7_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"insert_seq"</sourceRef>
+        <targetRef>_7_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_7_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <intermediateCatchEvent id="_8" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_9" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <callActivity id="_10" name="ATMP异常处理" calledElement="001.common.itsvc.0010003" >
+      <ioSpecification>
+        <dataInput id="_10_dataBusInput" name="dataBus" />
+        <dataOutput id="_10_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_10_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_10_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_10_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_10_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <exclusiveGateway id="_11" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_12" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_13" name="响应码转换组件" tns:taskName="platform.component.business.B_RESPONSE_MAPPING" >
+      <ioSpecification>
+        <dataInput id="_13_dataBusInput" name="dataBus" />
+        <dataInput id="_13_componentIdInput" name="componentId" />
+        <dataInput id="_13_mappingFlagInput" name="mappingFlag" />
+        <dataOutput id="_13_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_13_dataBusInput</dataInputRefs>
+          <dataInputRefs>_13_componentIdInput</dataInputRefs>
+          <dataInputRefs>_13_mappingFlagInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_13_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_13_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"resp_map"</sourceRef>
+        <targetRef>_13_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_13_mappingFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_13_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_13-_2" sourceRef="_13" targetRef="_2" />
+    <sequenceFlow id="_7-_3" sourceRef="_7" targetRef="_3" />
+    <sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4" />
+    <sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5" />
+    <sequenceFlow id="_1-_6" sourceRef="_1" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_11-_10" sourceRef="_11" targetRef="_10" />
+    <sequenceFlow id="_8-_11" sourceRef="_8" targetRef="_11" />
+    <sequenceFlow id="_9-_11" sourceRef="_9" targetRef="_11" />
+    <sequenceFlow id="_10-_12" sourceRef="_10" targetRef="_12" />
+    <sequenceFlow id="_5-_13" sourceRef="_5" targetRef="_13" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="001.itsvc.0013001" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="42" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="42" y="577" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="16" y="257" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="16" y="337" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="26" y="417" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="26" y="96" width="80" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="16" y="177" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="139" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="219" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="148" y="177" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="179" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="179" y="257" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="16" y="497" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_13-_2" >
+        <di:waypoint x="66" y="521" />
+        <di:waypoint x="66" y="601" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_3" >
+        <di:waypoint x="66" y="201" />
+        <di:waypoint x="66" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_4" >
+        <di:waypoint x="66" y="281" />
+        <di:waypoint x="66" y="361" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_5" >
+        <di:waypoint x="66" y="361" />
+        <di:waypoint x="66" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_6" >
+        <di:waypoint x="66" y="40" />
+        <di:waypoint x="66" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="66" y="120" />
+        <di:waypoint x="66" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11-_10" >
+        <di:waypoint x="203" y="120" />
+        <di:waypoint x="203" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_11" >
+        <di:waypoint x="163" y="40" />
+        <di:waypoint x="203" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_11" >
+        <di:waypoint x="243" y="40" />
+        <di:waypoint x="203" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_12" >
+        <di:waypoint x="203" y="201" />
+        <di:waypoint x="203" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_13" >
+        <di:waypoint x="66" y="441" />
+        <di:waypoint x="66" y="521" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

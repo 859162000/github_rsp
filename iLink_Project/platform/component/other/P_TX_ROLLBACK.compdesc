@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="事物回滚组件" desc="事物回滚组件"> 
+	<params>
+		<!--表示组件需要的外部传入的参数 -->
+		
+	</params>  
+	<results>
+		
+	</results>
+</root>

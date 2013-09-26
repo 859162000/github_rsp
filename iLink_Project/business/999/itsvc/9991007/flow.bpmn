@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_6-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_7-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_8-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_9-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="999.itsvc.9991007" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <task id="_6" name="与核心对账_更新核心与前置平，核心表chkflag=1" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_6_sqlTypeInput" name="sqlType" />
+        <dataInput id="_6_returnKeyInput" name="returnKey" />
+        <dataInput id="_6_sqlIdInput" name="sqlId" />
+        <dataInput id="_6_dataBusInput" name="dataBus" />
+        <dataOutput id="_6_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_6_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_6_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_6_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_6_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_6_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"update"</sourceRef>
+        <targetRef>_6_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_6_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.checkinfo.host_updateOne"</sourceRef>
+        <targetRef>_6_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_6_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_6_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_7" name="与核心对账_更新前置与核心平，前置表bankchkflag='1',banksysstatus='1'" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_7_sqlTypeInput" name="sqlType" />
+        <dataInput id="_7_returnKeyInput" name="returnKey" />
+        <dataInput id="_7_sqlIdInput" name="sqlId" />
+        <dataInput id="_7_dataBusInput" name="dataBus" />
+        <dataOutput id="_7_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_7_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_7_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_7_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_7_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_7_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"update"</sourceRef>
+        <targetRef>_7_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_7_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.checkinfo.host_updateThree"</sourceRef>
+        <targetRef>_7_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_7_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_7_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_8" name="与核心对账_更新核心比前置多，核心表chkflag=0" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_8_sqlTypeInput" name="sqlType" />
+        <dataInput id="_8_returnKeyInput" name="returnKey" />
+        <dataInput id="_8_sqlIdInput" name="sqlId" />
+        <dataInput id="_8_dataBusInput" name="dataBus" />
+        <dataOutput id="_8_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_8_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_8_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_8_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_8_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_8_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"update"</sourceRef>
+        <targetRef>_8_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_8_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.checkinfo.host_updateTwo"</sourceRef>
+        <targetRef>_8_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_8_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_8_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_9" name="与核心对账_更新前置与核心多，核心记账失败，前置表bankchkflag='0',banksysstatus='0'" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_9_sqlTypeInput" name="sqlType" />
+        <dataInput id="_9_returnKeyInput" name="returnKey" />
+        <dataInput id="_9_sqlIdInput" name="sqlId" />
+        <dataInput id="_9_dataBusInput" name="dataBus" />
+        <dataOutput id="_9_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_9_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_9_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_9_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_9_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_9_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"update"</sourceRef>
+        <targetRef>_9_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_9_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"999.common.sql.checkinfo.host_updateFour"</sourceRef>
+        <targetRef>_9_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_9_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_9_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <endEvent id="_10" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_6" sourceRef="_1" targetRef="_6" />
+    <sequenceFlow id="_8-_7" sourceRef="_8" targetRef="_7" />
+    <sequenceFlow id="_6-_8" sourceRef="_6" targetRef="_8" />
+    <sequenceFlow id="_7-_9" sourceRef="_7" targetRef="_9" />
+    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="999.itsvc.9991007" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="286" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="135" y="96" width="351" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="88" y="256" width="445" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="160" y="176" width="300" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="16" y="336" width="588" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="286" y="416" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_6" >
+        <di:waypoint x="310" y="40" />
+        <di:waypoint x="310" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_7" >
+        <di:waypoint x="310" y="200" />
+        <di:waypoint x="310" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_8" >
+        <di:waypoint x="310" y="120" />
+        <di:waypoint x="310" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_9" >
+        <di:waypoint x="310" y="280" />
+        <di:waypoint x="310" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
+        <di:waypoint x="310" y="360" />
+        <di:waypoint x="310" y="440" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root displayname="Batch调试组件" desc="Batch调试组件">
+	<params>
+		<!--表示组件需要的外部传入的参数 -->
+		<variable name="method" type="string" displayname="方法名"/>
+	</params>
+</root>

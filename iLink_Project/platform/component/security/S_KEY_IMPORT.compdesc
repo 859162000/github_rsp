@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="密钥导入组件" desc="密钥导入组件"> 
+  <params> 
+    <variable name="platformType" type="string" dict="SEC_PLATFORM" displayname="加密平台"/>
+    <variable name="saveType" type="string" dict="SEC_KEYSAVE" displayname="密钥存储"/>
+    <variable name="keyGroup" type="string" displayname="密钥组ID"/>
+    <variable name="algorithm" type="string" dict="ENC_ALGORITHM" displayname="密钥算法"/>
+    <variable name="keys" type="list" displayname="密钥分量集合"/>  
+    <variable name="encryptedKey" type="binary" displayname="导入的密钥密文"/>  
+    <variable name="encryptedKeyCK" type="binary" displayname="导入的密钥校验串"/>  
+  </params>  
+  <results> 
+  </results> 
+</root>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="联机冲正/撤销类交易" desc="联机冲正/撤销类交易流程模板"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

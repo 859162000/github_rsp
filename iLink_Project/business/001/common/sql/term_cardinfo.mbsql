@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="001.common.sql.term_cardinfo">
+
+	<!-- 查询记录：单条和多条 -->	
+	<resultMap type="map" id="resulttest">
+	<result property="bin_seq" column="BIN_SEQ" javaType="string" />
+	<result property="bin_type" column="BIN_TYPE" javaType="string" />
+	<result property="cardno_offset" column="CARDNO_OFFSET" javaType="string" />
+	<result property="cardno_len" column="CARDNO_LEN" javaType="string" />
+	<result property="location_flag" column="LOCATION_FLAG" javaType="string" />
+	<result property="operation_enabled" column="OPERATION_ENABLED"
+		javaType="string" />
+	<result property="frst_bin" column="FRST_BIN" javaType="string" />
+	<result property="scnd_bin" column="SCND_BIN" javaType="string" />
+	<result property="thrd_bin" column="THRD_BIN" javaType="string" />
+	<result property="frst_bin_offset" column="FRST_BIN_OFFSET" javaType="string" />
+	<result property="scnd_bin_offset" column="SCND_BIN_OFFSET" javaType="string" />
+	<result property="thrd_bin_offset" column="THRD_BIN_OFFSET" javaType="string" />
+</resultMap>	
+	<select id="selectRecords" parameterType="map" resultMap="resulttest">
+		<![CDATA[
+		select * from (
+			select rownum rn,t.* from ops_cardbin_info t )
+		where rn >=#{start_idx} 
+		]]>
+	</select>
+	
+</mapper>
+
+

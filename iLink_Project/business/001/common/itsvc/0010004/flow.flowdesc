@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="查询设备、柜员信息" desc="查询设备、柜员信息"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

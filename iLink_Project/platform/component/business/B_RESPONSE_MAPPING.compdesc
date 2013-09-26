@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="响应码转换组件" desc="响应码转换组件"> 
+  <params> 
+    <!--表示组件需要的外部传入的参数 -->  
+    <variable name="mappingFlag" type="string" displayname="转换标志(0-内部转外部, 1-外部转内部)" defvalue="0"/>  
+     
+  </params>  
+  <results> 
+     
+  </results> 
+</root>

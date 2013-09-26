@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="001.common.sql.term_encryptkey">
+
+	<resultMap type="map" id="result_get_tmk_by_termid">
+		<result property="CHECK_VALUE" 	column="CHECK_VALUE"  	javaType="[B"/>
+		<result property="KEY" 	column="KEY" 	javaType="[B"/>
+	</resultMap>	
+	<select id="get_tmk_by_termid" parameterType="map" resultMap="result_get_tmk_by_termid">
+		select key,check_value from plat_sec_key_storage 
+		where
+			channel_id=#{p_channel_code} and terminal=#{p_term_id} and 
+			key_type in ('ZMK', 'TMK') and key_status='CURR' 
+		order by key_type 
+	</select>
+	 
+	 <resultMap type="map" id="result_get_key_by_termid">
+		<result property="CHECK_VALUE" 	column="CHECK_VALUE"  	javaType="[B"/>
+		<result property="KEY" 	column="KEY" 	javaType="[B"/>
+	</resultMap>	
+	<select id="get_key_by_termid" parameterType="map" resultMap="result_get_key_by_termid">
+		select key,check_value from plat_sec_key_storage 
+		where
+			channel_id=#{p_channel_code} and terminal=#{p_term_id} and 
+			key_type = #{encrypt_key_type} and key_status='CURR' 
+		order by key_type 
+	</select>
+</mapper>
+
+

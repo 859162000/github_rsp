@@ -1,0 +1,4 @@
+<driver>oracle.jdbc.driver.OracleDriver</driver>
+<url>jdbc:oracle:thin:@10.8.206.190:1521:orcl</url>
+<username>ilink_demo</username>
+<password>12345678</password>

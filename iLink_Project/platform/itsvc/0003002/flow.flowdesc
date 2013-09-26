@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="流程名称" desc="详细描述"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/>  
+    <variable name="t_table" type="string" displayname="待查询的表名" desc="待查询的表名"/>  
+    <variable name="t_columns" type="list" displayname="待查询的表字段" desc="待查询的表字段，如： p_biz_seqno, account_no – 表示查询数据表这两个字段 "/>  
+    <variable name="t_where_cond" displayname="sql条件" type="string" desc="sql条件，如： amount &gt; ‘100’ and user_id=’0001’ "/>  
+    <variable name="t_where_pagecond" type="string" desc="翻页sql条件（翻页字段），如： p_seq_no = ‘123’ and p_req_date=’20130808’ " displayname="翻页sql条件"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

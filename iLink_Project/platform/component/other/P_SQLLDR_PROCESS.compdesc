@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root displayname="SQLLDR数据导入组件4" desc="SQLLDR数据导入组件">
+	<params>
+		<!--表示组件需要的外部传入的参数 -->
+		<variable name="sqlldrid" type="string" displayname="sqlLoaderID" defvalue="sqlLoaderID"/>
+		
+	</params>  
+	<results>
+		
+	</results>
+</root>

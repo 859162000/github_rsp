@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_8-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="002.common.itsvc.0020001" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <scriptTask id="_2" name="目标渠道状态控制规则" scriptFormat="http://www.java.com/java" >
+      <script>if (!dataBus.getList("service_cntrl_info").isEmpty() &amp;&amp; dataBus.get("service_cntrl_info[0]") != null) {
+	if (!"0".equals(dataBus.get("service_cntrl_info[0].state"))) {
+	//系统运行为非正常状态
+		System.err.println("目标渠道状态控制规则, 系统运行为非正常状态");
+		dataBus.set("p_front_resp_code", "06");
+		kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+	} else if (!"0".equals(dataBus.get("service_cntrl_info[0].work_state"))) {
+	//日切状态 ,日切中
+		System.err.println("目标渠道状态控制规则, 日切状态 ,日切中");
+		dataBus.set("p_front_resp_code", "07");
+		kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+	} else if (!"0".equals(dataBus.get("service_cntrl_info[0].sign_state"))) {
+	//尚未签到
+		System.err.println("目标渠道状态控制规则, 尚未签到");
+		dataBus.set("p_front_resp_code", "08");
+		kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+	} else if (false) {
+	//−	系统清算日期：不允许撤销、冲正过来的交易与原交易日期不同
+		if("0400".equals(dataBus.get("message_type")) || "0200".equals(dataBus.get("message_type"))) {
+			if (!((String)dataBus.get("service_cntrl_info[0].curr_date")).endsWith((String)dataBus.get("settle_date"))) {
+				System.err.println("目标渠道状态控制规则, 不允许撤销、冲正过来的交易与原交易日期不同");
+				dataBus.set("p_front_resp_code", "09");
+				kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+			}
+		}
+	}
+} else {
+	System.err.println("目标渠道状态控制规则, 没有匹配到相关渠道状态控制信息");
+	dataBus.set("p_front_resp_code", "10");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+}</script>
+    </scriptTask>
+    <endEvent id="_3" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <intermediateCatchEvent id="_4" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_5" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <exclusiveGateway id="_6" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_7" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_8" name="查询渠道服务控制信息" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_8_sqlTypeInput" name="sqlType" />
+        <dataInput id="_8_returnKeyInput" name="returnKey" />
+        <dataInput id="_8_sqlIdInput" name="sqlId" />
+        <dataInput id="_8_dataBusInput" name="dataBus" />
+        <dataInput id="_8_componentIdInput" name="componentId" />
+        <dataOutput id="_8_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_8_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_8_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_8_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_8_dataBusInput</dataInputRefs>
+          <dataInputRefs>_8_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_8_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_8_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"service_cntrl_info"</sourceRef>
+        <targetRef>_8_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"002.common.sql.plat_service_cntrl.getServiceCntrlInfo"</sourceRef>
+        <targetRef>_8_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_8_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"select_channel_ctrl_info"</sourceRef>
+        <targetRef>_8_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_8_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_8-_2" sourceRef="_8" targetRef="_2" />
+    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+    <sequenceFlow id="_4-_6" sourceRef="_4" targetRef="_6" />
+    <sequenceFlow id="_5-_6" sourceRef="_5" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_1-_8" sourceRef="_1" targetRef="_8" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="002.common.itsvc.0020001" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="128" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="79" y="177" width="147" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="128" y="257" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="281" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="361" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="321" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="321" y="177" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="16" y="96" width="273" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_8-_2" >
+        <di:waypoint x="152" y="120" />
+        <di:waypoint x="152" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="152" y="201" />
+        <di:waypoint x="152" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_6" >
+        <di:waypoint x="305" y="40" />
+        <di:waypoint x="345" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_6" >
+        <di:waypoint x="385" y="40" />
+        <di:waypoint x="345" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="345" y="120" />
+        <di:waypoint x="345" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_8" >
+        <di:waypoint x="152" y="40" />
+        <di:waypoint x="152" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

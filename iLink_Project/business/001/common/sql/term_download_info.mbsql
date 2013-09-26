@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="001.common.sql.term_download_info">
+	<!-- 查询记录：单条和多条 -->	
+	<select id="selectOne" parameterType="map" resultType="map">
+		select A.VIRTUAL_OPERATOR ,A.INST_CODE from  OPS_TERMINAL_CNTRL A 
+		where
+			A.TERMINAL_ID=#{p_term_id}
+	</select>
+</mapper>
+
+

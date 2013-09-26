@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_4-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_5-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="901.itsvc.9011003" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+     <tns:import name="com.eastcom.ilink.businessprocess.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <exclusiveGateway id="_3" name="分支" gatewayDirection="Diverging" />
+    <task id="_4" name="查询总笔数" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_4_sqlTypeInput" name="sqlType" />
+        <dataInput id="_4_switchFlagInput" name="switchFlag" />
+        <dataInput id="_4_returnKeyInput" name="returnKey" />
+        <dataInput id="_4_sqlIdInput" name="sqlId" />
+        <dataInput id="_4_dataBusInput" name="dataBus" />
+        <dataInput id="_4_componentIdInput" name="componentId" />
+        <dataOutput id="_4_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_4_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_4_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_4_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_4_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_4_dataBusInput</dataInputRefs>
+          <dataInputRefs>_4_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_4_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"selectOne"</sourceRef>
+        <targetRef>_4_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_4_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"dbResult"</sourceRef>
+        <targetRef>_4_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"901.common.sql.biz_main_dtl.selectCount"</sourceRef>
+        <targetRef>_4_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_4_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_4_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_dataBusOutput</sourceRef>
+        <targetRef>"dataBus"</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_5" name="查询明细" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_5_sqlTypeInput" name="sqlType" />
+        <dataInput id="_5_switchFlagInput" name="switchFlag" />
+        <dataInput id="_5_returnKeyInput" name="returnKey" />
+        <dataInput id="_5_sqlIdInput" name="sqlId" />
+        <dataInput id="_5_dataBusInput" name="dataBus" />
+        <dataInput id="_5_componentIdInput" name="componentId" />
+        <dataOutput id="_5_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_5_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_5_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_5_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_5_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_5_dataBusInput</dataInputRefs>
+          <dataInputRefs>_5_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_5_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_5_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_5_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"result"</sourceRef>
+        <targetRef>_5_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"901.common.sql.biz_main_dtl.selectList"</sourceRef>
+        <targetRef>_5_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_5_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_5_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_5_dataBusOutput</sourceRef>
+        <targetRef>"dataBus"</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_7" name="分支" gatewayDirection="Diverging" />
+    <endEvent id="_8" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <endEvent id="_10" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <scriptTask id="_14" name="设置模版参数" scriptFormat="http://www.java.com/java" >
+      <script>dataBus.set("t_table", "biz_main_dtl");
+dataBus.set("t_columns", "payer_acc,work_date,p_biz_seqno,amount,trans_code");
+dataBus.set("t_where_cond", dataBus.get("t_where_cond"));
+dataBus.set("t_where_pagecond", dataBus.get("t_where_pagecond"));
+dataBus.set("perpage_size", Integer.parseInt((String)dataBus.get("perpage_size"))+1);
+
+dataBus.set("resp_status", "1");
+dataBus.set("p_front_resp_code", "00000000");
+dataBus.set("resp_desc", "00");</script>
+    </scriptTask>
+    <scriptTask id="_15" name="脚本" scriptFormat="http://www.java.com/java" >
+      <script>List list = (List)dataBus.get("result");
+dataBus.unset("result");
+int size = list.size();
+if(0&lt;= size &amp;&amp;  size&lt; (Integer)dataBus.get("perpage_size"))
+{
+	// 记录不足下一页
+	dataBus.set("has_nextpage",  "0");
+	dataBus.set("records", list);
+}else {
+	// 记录满足有下一页的情况。
+	dataBus.set("has_nextpage",  "1");
+	List newList = new ArrayList();
+	dataBus.set("records", newList);
+	for (int i=0;i&lt;size-1;i++) {
+		Map m = (Map) list.get(i);
+		newList.add(m);
+	}
+	
+}</script>
+    </scriptTask>
+    <intermediateCatchEvent id="_17" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_16" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <scriptTask id="_19" name="设置错误码" >
+      <script></script>
+    </scriptTask>
+    <exclusiveGateway id="_18" name="合并" gatewayDirection="Converging" />
+    <exclusiveGateway id="_21" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_20" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <scriptTask id="_24" name="脚本" scriptFormat="http://www.java.com/java" >
+      <script>Integer result_count = Integer.parseInt((String)dataBus.get("record_count"));
+Integer size = (Integer)dataBus.get("perpage_size");
+if(!"0".equals(result_count)){
+	int page_count = result_count / (size-1);
+	int page_mod = result_count%(size -1);
+	if(page_mod==0){
+		 dataBus.set("page_count",   ""+page_count);
+	}else{
+		dataBus.set("page_count",   ""+(page_count +1));
+	}
+}</script>
+    </scriptTask>
+
+    <!-- connections -->
+    <sequenceFlow id="_14-_3" sourceRef="_14" targetRef="_3" />
+    <sequenceFlow id="_3-_4" sourceRef="_3" targetRef="_4" name="计算总笔数" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_21-_5" sourceRef="_21" targetRef="_5" />
+    <sequenceFlow id="_24-_7" sourceRef="_24" targetRef="_7" />
+    <sequenceFlow id="_7-_8" sourceRef="_7" targetRef="_8" name="不存在" >
+      <conditionExpression xsi:type="tFormalExpression" >if("0".equals(dataBus.get("record_count"))){
+	return true;
+}else{
+	return false;
+}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_15-_10" sourceRef="_15" targetRef="_10" />
+    <sequenceFlow id="_1-_14" sourceRef="_1" targetRef="_14" />
+    <sequenceFlow id="_5-_15" sourceRef="_5" targetRef="_15" />
+    <sequenceFlow id="_18-_19" sourceRef="_18" targetRef="_19" />
+    <sequenceFlow id="_16-_18" sourceRef="_16" targetRef="_18" />
+    <sequenceFlow id="_17-_18" sourceRef="_17" targetRef="_18" />
+    <sequenceFlow id="_3-_21" sourceRef="_3" targetRef="_21" name="不计算总笔数" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >if("0".equals(dataBus.get("flag_calsize"))){
+  return true;
+}else{
+	return false;
+}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_7-_21" sourceRef="_7" targetRef="_21" name="记录存在" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_19-_20" sourceRef="_19" targetRef="_20" />
+    <sequenceFlow id="_4-_24" sourceRef="_4" targetRef="_24" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="901.itsvc.9011003" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="118" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="118" y="177" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="16" y="258" width="100" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="92" y="581" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="42" y="419" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="38" y="500" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="118" y="741" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" >
+        <dc:Bounds x="79" y="96" width="127" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15" >
+        <dc:Bounds x="102" y="661" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_17" >
+        <dc:Bounds x="198" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="278" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" >
+        <dc:Bounds x="213" y="177" width="99" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18" >
+        <dc:Bounds x="238" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_21" >
+        <dc:Bounds x="118" y="500" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_20" >
+        <dc:Bounds x="238" y="258" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_24" >
+        <dc:Bounds x="26" y="339" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_14-_3" >
+        <di:waypoint x="142" y="120" />
+        <di:waypoint x="142" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_4" >
+        <di:waypoint x="142" y="201" />
+        <di:waypoint x="66" y="282" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_21-_5" >
+        <di:waypoint x="142" y="524" />
+        <di:waypoint x="142" y="605" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_24-_7" >
+        <di:waypoint x="66" y="363" />
+        <di:waypoint x="66" y="443" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_8" >
+        <di:waypoint x="66" y="443" />
+        <di:waypoint x="62" y="524" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-_10" >
+        <di:waypoint x="142" y="685" />
+        <di:waypoint x="142" y="765" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_14" >
+        <di:waypoint x="142" y="40" />
+        <di:waypoint x="142" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_15" >
+        <di:waypoint x="142" y="605" />
+        <di:waypoint x="142" y="685" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_18-_19" >
+        <di:waypoint x="262" y="120" />
+        <di:waypoint x="262" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_18" >
+        <di:waypoint x="302" y="40" />
+        <di:waypoint x="262" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_18" >
+        <di:waypoint x="222" y="40" />
+        <di:waypoint x="262" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3-_21" >
+        <di:waypoint x="142" y="201" />
+        <di:waypoint x="142" y="524" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_21" >
+        <di:waypoint x="66" y="443" />
+        <di:waypoint x="142" y="524" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_20" >
+        <di:waypoint x="262" y="201" />
+        <di:waypoint x="262" y="282" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_24" >
+        <di:waypoint x="66" y="282" />
+        <di:waypoint x="66" y="363" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

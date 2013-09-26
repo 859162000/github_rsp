@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="后台请求组件" desc="后台服务请求组件"> 
+  <params> 
+    <!--表示组件需要的外部传入的参数 -->  
+    <variable name="targetChannelCode" type="string" displayname="目标渠道代码" defvalue="目标渠道代码"/>  
+    <variable name="targetAdapterId" type="string" displayname="目标适配器代码" defvalue="目标适配器代码"/>  
+    <variable name="outTranCode" type="string" displayname="外部服务名" defvalue="外部服务名"/>
+     
+  </params>  
+  <results> 
+     
+  </results> 
+</root>

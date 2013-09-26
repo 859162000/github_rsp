@@ -1,0 +1,38 @@
+
+//list any import classes here.
+import com.eastcom.ilink.common.databus.DataBus;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRule;
+import com.eastcom.ilink.businessprocess.res.rule.bean.TransRuleParam;
+
+
+//declare any global variables here
+
+
+rule "002.0023018.rule.0023018_rule1" 
+	when
+        //conditions
+        dataBus : DataBus()
+    then
+        //商户校验
+        dataBus.set("merchant_check_process","false");
+        //终端校检
+        dataBus.set("terminal_check_process","false");
+		//actions
+		dataBus.set("manage_type_rule", "002.common.flow.empty");
+		dataBus.set("special_field_rule2", "002.0023018.flow.0023018_custom_process1");
+		
+		// test data
+		// 消息类型
+		dataBus.set("message_type", "0810");
+		// 12.受卡方系统所在时间
+		dataBus.set("term_time", "120000");
+		// 13.受卡方系统所在日期
+		dataBus.set("term_date", "0601");
+		// 32.受理方标识码
+		dataBus.set("acq_inst_code", "10000000000");
+		// 39.应答码
+		dataBus.set("p_front_resp_code", "00");
+		// 62.TMS参数
+		dataBus.set("TMS_message.plat_flag", "12345678");
+end
+

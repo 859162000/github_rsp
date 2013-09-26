@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.common.sql.biz_batch_main">
+	<!-- 查询记录：单条和多条 -->	
+		<select id="selectToDeal" parameterType="map" resultType="map">
+	 select  * from(select * from biz_batch_main 	where
+			bat_stat='01' or bat_stat='10' ) where rownum=1
+	</select>
+	<select id="selectToReturn" parameterType="map" resultType="map">
+	 select  * from(select * from biz_batch_main 	where
+			bat_stat='02' or bat_stat='10' ) where rownum=1
+		
+	</select>
+	 
+	 <update id="update_status" parameterType="map">
+		update biz_batch_main 
+			bat_stat=#{bat_stat,	jdbcType=VARCHAR}
+		where 
+			bat_no =#{bat_no,	jdbcType=VARCHAR}
+			and work_date" =#{work_date,	jdbcType=VARCHAR}
+	</update>
+</mapper>
+
+

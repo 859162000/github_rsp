@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="加密组件" desc="数据加密组件"> 
+  <params> 
+    <variable name="platformType" type="string" dict="SEC_PLATFORM" displayname="加密平台"/>
+    <variable name="saveType" type="string" dict="SEC_KEYSAVE" displayname="密钥存储"/>
+    <variable name="keyGroup" type="string" displayname="密钥组ID"/>
+    <variable name="algorithm" type="string" dict="ENC_ALGORITHM" displayname="算法类型"/>
+    <variable name="plaintextData" type="binary" displayname="明文数据"/>  
+  </params>  
+  <results> 
+    <variable name="encryptedData" type="binary" displayname="加密结果密文"/>  
+  </results> 
+</root>

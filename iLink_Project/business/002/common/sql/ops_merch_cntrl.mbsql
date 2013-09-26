@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="002.common.sql.ops_merch_cntrl">
+	<select id="merchant_check" parameterType="java.lang.String" resultType="int">
+		select 1 from OPS_MERCH_CNTRL c where c.merch_cntrl_type = #{channel_merch_cntrl_type[0], jdbcType=CHAR} 
+		AND c.cntrl_code=(select substr(b.merch_code, 8, 4) from OPS_TERMINAL_CNTRL b where b.terminal_id='00000001')
+	</select>
+</mapper>
+
+

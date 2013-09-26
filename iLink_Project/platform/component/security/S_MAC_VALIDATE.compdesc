@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="MAC验证组件" desc="MAC验证组件"> 
+  <params> 
+    <variable name="platformType" type="string" dict="SEC_PLATFORM" displayname="加密平台"/>
+    <variable name="saveType" type="string" dict="SEC_KEYSAVE" displayname="密钥存储"/>
+    <variable name="keyGroup" type="string" displayname="密钥组ID"/>
+    <variable name="algorithm" type="string" dict="MAC_ALG_TYPE" displayname="MAC算法"/>  
+    <variable name="initialization" type="string" displayname="初始向量" defvalue="00000000"/>  
+    <variable name="macData" type="binary" displayname="MAB数据" />  
+    <variable name="mac" type="binary" displayname="待验证的MAC" />  
+  </params>  
+  <results> 
+  </results> 
+</root>

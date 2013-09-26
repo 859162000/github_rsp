@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="更新设备状态" desc="检查交易是否需要更新设备状态，若需要还要判断是插入新记录还是更新"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"> 
+      <variable name="acctNo" type="string" displayname="账号"/> 
+    </variable> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"> 
+      <variable name="acctName" type="string" displayname="户名"/> 
+    </variable> 
+  </results> 
+</root>

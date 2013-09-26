@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dicts>
+	<dict name="YES_OR_NO" desc = "是否集" >
+		<entry value="0"  	desc="否" />
+		<entry value="1"		desc="是" />
+	</dict>
+		<dict name="ON_OR_OFF" desc = "开关集" >
+		<entry value="0"  	desc="关闭" />
+		<entry value="1"		desc="开启" />
+	</dict>
+	<dict name="SWITCH_FLAG" desc = "组件开关" >
+		<entry value="false"  	desc="关" />
+		<entry value="true"		desc="开" />
+	</dict>
+	<dict name="TRXN_TYPE" desc = "交易类型" >
+		<entry value="0"  	desc="公共类" />
+		<entry value="1"	desc="一般类" />
+		<entry value="2"	desc="通知类" />
+		<entry value="3"	desc="管理类" />
+		<entry value="4"	desc="冲正类" />
+		<entry value="5"	desc="撤消类" />
+		<entry value="6"	desc="确认类" />
+		<entry value="7"	desc="批量类" />
+		<entry value="8"	desc="对账类" />
+		<entry value="9"	desc="其他类" />
+	</dict>
+	<dict name="PRIORITY_FLAG" desc = "交易优先级" >
+		<entry value="0"  	desc="低" />
+		<entry value="1"		desc="较低" />
+		<entry value="2"  	desc="中" />
+		<entry value="3"		desc="较高" />
+		<entry value="4"		desc="高" />
+	</dict>
+	<dict name="SEND_STRATEGY" desc = "发送策略">
+		<entry value="Polling"	desc="Polling" />
+		<entry value="Standby"	desc="Standby" />
+	</dict>
+	<dict name="SYNC_OR_ASYNC" desc = "是否同步">
+		<entry value="Syn"	desc="同步" />
+		<entry value="Asyn"	desc="异步" />
+	</dict>
+	<dict name="TRANSFER_TYPE" desc = "传输类型">
+		<entry value="ASCII"	desc="ASCII" />
+		<entry value="BINARY"	desc="BINARY" />
+	</dict>
+	<dict name="FTP_TYPE" desc = "FTP类型">
+		<entry value="GET"	desc="GET" />
+		<entry value="PUT"	desc="PUT" />
+	</dict>
+	<dict name="PROTOCOL_TYPE" desc = "协议类型">
+		<entry value="FTP"	desc="FTP" />
+		<entry value="SFTP"	desc="SFTP" />
+	</dict>
+	<dict name="ENC_ALGORITHM" desc = "加解密算法">
+		<entry value="DES_ECB_8"	desc="DES算法_ECB模式" />
+		<entry value="DES_CBC_8"	desc="DES算法_CBC模式" />
+		<entry value="TRIPLEDES_ECB_16"	desc="3DES算法_16位ECB模式" />
+		<entry value="TRIPLEDES_CBC_16"	desc="3DES算法_16位CBC模式" />
+		<entry value="TRIPLEDES_ECB_24"	desc="3DES算法_24位ECB模式" />
+		<entry value="TRIPLEDES_CBC_24"	desc="3DES算法_24位CBC模式" />
+		<entry value="SM4_ECB"	desc="SM4算法_16位ECB模式" />
+		<entry value="SM4_CBC"	desc="SM4算法_16位CBC模式" />
+	</dict>
+	<dict name="SCENARIO_CHECK" desc = "Mac校验场景">
+		<entry value="1"	desc="收到请求环节" />
+		<entry value="3"	desc="收到响应环节" />
+	</dict>
+	<dict name="SCENARIO_GENERATE" desc = "Mac生成场景">
+		<entry value="2"	desc="发送请求环节" />
+		<entry value="4"	desc="返回响应环节" />
+	</dict>	
+	<dict name="GEN_PRINT_TYPE" desc = "MAC生成打印选项">
+		<entry value="0"	desc="随机密钥不打印" />
+		<entry value="1"	desc="随机密钥打印" />
+		<entry value="16"	desc="数字密钥密钥打印" />
+		<entry value="17"	desc="数字密钥密钥不打印" />
+	</dict>
+	<dict name="GEN_KEY_TYPE" desc = "MAC生成密钥类型">
+		<entry value="ZMK"	desc="主密钥" />
+		<entry value="TMK"	desc="传输主密钥" />
+		<entry value="MAK"	desc="MAC计算密钥" />
+		<entry value="PIK"	desc="PIN加密密钥" />
+		<entry value="DEK"	desc="数据加密密钥" />
+	</dict>
+	<dict name="IMPORT_KEY_TYPE" desc = "导入密钥类型">
+		<entry value="LMK "	desc="本地主密钥" />	
+		<entry value="ZMK"	desc="主密钥" />
+		<entry value="TMK"	desc="传输主密钥" />
+		<entry value="MAK"	desc="MAC计算密钥" />
+		<entry value="PIK"	desc="PIN加密密钥" />
+		<entry value="DEK"	desc="数据加密密钥" />
+		<entry value="CVK"	desc="CVV计算密钥" />
+	</dict>
+	<dict name="MAC_ALG_TYPE" desc = "MAC计算算法">
+		<entry value="XOR"	desc="异或" />
+		<entry value="X9_9"	desc="ANSIX9.9" />
+		<entry value="X9_9_DES_ECB"	desc="ANSIX9.9_DES_ECB" />
+		<entry value="X9_19"	desc="ANSIX9.19" />
+		<entry value="SM4_MAC_1"	desc="标准SM4MAC算法1" />
+	</dict>
+	<dict name="PIN_FORMAT" desc = "PIN格式类型">
+		<entry value="ANSI9_8_1"	desc="带主帐号的ANSI9.8格式" />
+		<entry value="ANSI9_8_2"	desc="不带主帐号的ANSI9.8格式" />
+		<entry value="DATM"		desc="Docutel ATM格式" />
+		<entry value="DIATM"	desc="Diebold and IBM ATM格式" />
+		<entry value="PN"		desc="Plus Network" />
+		<entry value="ISO9564_1_1"	desc="ISO9564-1-1格式" />
+		<entry value="SM4_PIN_1"	desc="SM4_PIN_1" />
+	</dict>
+	<dict name="MAPPING_FLAG" desc = "响应码转换标志">
+		<entry value="0"	desc="内部转外部" />
+		<entry value="1"	desc="外部转内部" />
+	</dict>
+	<dict name="ROUTE_TYPE" desc = "路由类型">
+		<entry value="00"	desc="缺省" />
+		<entry value="01"	desc="卡表" />
+	</dict>
+	<dict name="SEC_PLATFORM" desc = "加密平台类型">
+		<entry value="SOFT"	desc="软加密" />
+		<entry value="HARD_SHJ05"	desc="硬加密卫士通-SHJ05" />
+		<entry value="JNTA"	desc="江南天安-JNI" />
+	</dict>
+	<dict name="SEC_KEYSAVE" desc = "密钥存储平台类型">
+		<entry value="ILINK"	desc="iLink" />
+		<entry value="OTHER"	desc="其他" />
+	</dict>
+	<dict name="DEVICE_TYPE" desc = "设备类型">
+		<entry value="ATM"	desc="ATM" />
+		<entry value="POS"	desc="POS" />
+	</dict>
+	
+</dicts>

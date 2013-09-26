@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="数据库记录检查" desc="冲正和确认交易需要检查原交易"> 
+  <params> 
+    <variable name="databus" type="databus" displayname="数据总线"/> 
+  </params>  
+  <results> 
+    <variable name="databus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

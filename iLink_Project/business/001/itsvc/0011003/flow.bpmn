@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_34-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_33-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_36-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_6-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_37-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_43-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_21-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_31-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="001.itsvc.0011003" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <task id="_34" name="后台请求组件" tns:taskName="platform.component.business.B_SERVICE_REQUEST" >
+      <ioSpecification>
+        <dataInput id="_34_targetAdapterIdInput" name="targetAdapterId" />
+        <dataInput id="_34_outTranCodeInput" name="outTranCode" />
+        <dataInput id="_34_dataBusInput" name="dataBus" />
+        <dataInput id="_34_targetChannelCodeInput" name="targetChannelCode" />
+        <dataOutput id="_34_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_34_targetAdapterIdInput</dataInputRefs>
+          <dataInputRefs>_34_outTranCodeInput</dataInputRefs>
+          <dataInputRefs>_34_dataBusInput</dataInputRefs>
+          <dataInputRefs>_34_targetChannelCodeInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_34_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"3"</sourceRef>
+        <targetRef>_34_targetAdapterIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0200_011000"</sourceRef>
+        <targetRef>_34_outTranCodeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_34_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"012"</sourceRef>
+        <targetRef>_34_targetChannelCodeInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_34_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <startEvent id="_1" name="StartProcess" />
+    <task id="_33" name="PIN转换组件" tns:taskName="platform.component.security.S_PIN_CONVERT" >
+      <ioSpecification>
+        <dataInput id="_33_switchFlagInput" name="switchFlag" />
+        <dataInput id="_33_userCoverInput" name="userCover" />
+        <dataInput id="_33_desAccountInput" name="desAccount" />
+        <dataInput id="_33_desBlockResultInput" name="desBlockResult" />
+        <dataInput id="_33_pinFormatInput" name="pinFormat" />
+        <dataInput id="_33_saveTypeInput" name="saveType" />
+        <dataInput id="_33_desPinFormatInput" name="desPinFormat" />
+        <dataInput id="_33_platformTypeInput" name="platformType" />
+        <dataInput id="_33_keyGroupInput" name="keyGroup" />
+        <dataInput id="_33_accountInput" name="account" />
+        <dataInput id="_33_dataBusInput" name="dataBus" />
+        <dataInput id="_33_desKeyGroupInput" name="desKeyGroup" />
+        <dataInput id="_33_pinBlockInput" name="pinBlock" />
+        <dataOutput id="_33_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_33_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_33_userCoverInput</dataInputRefs>
+          <dataInputRefs>_33_desAccountInput</dataInputRefs>
+          <dataInputRefs>_33_desBlockResultInput</dataInputRefs>
+          <dataInputRefs>_33_pinFormatInput</dataInputRefs>
+          <dataInputRefs>_33_saveTypeInput</dataInputRefs>
+          <dataInputRefs>_33_desPinFormatInput</dataInputRefs>
+          <dataInputRefs>_33_platformTypeInput</dataInputRefs>
+          <dataInputRefs>_33_keyGroupInput</dataInputRefs>
+          <dataInputRefs>_33_accountInput</dataInputRefs>
+          <dataInputRefs>_33_dataBusInput</dataInputRefs>
+          <dataInputRefs>_33_desKeyGroupInput</dataInputRefs>
+          <dataInputRefs>_33_pinBlockInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_33_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"true"</sourceRef>
+        <targetRef>_33_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_33_userCoverInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("account_no")</sourceRef>
+        <targetRef>_33_desAccountInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"pin_exchange"</sourceRef>
+        <targetRef>_33_desBlockResultInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ANSI9_8_1"</sourceRef>
+        <targetRef>_33_pinFormatInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ILINK"</sourceRef>
+        <targetRef>_33_saveTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"ANSI9_8_1"</sourceRef>
+        <targetRef>_33_desPinFormatInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"SOFT"</sourceRef>
+        <targetRef>_33_platformTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("p_term_id")</sourceRef>
+        <targetRef>_33_keyGroupInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("account_no")</sourceRef>
+        <targetRef>_33_accountInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_33_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"CARD"</sourceRef>
+        <targetRef>_33_desKeyGroupInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus.get("pin")</sourceRef>
+        <targetRef>_33_pinBlockInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_33_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_36" name="响应码转换组件" tns:taskName="platform.component.business.B_RESPONSE_MAPPING" >
+      <ioSpecification>
+        <dataInput id="_36_dataBusInput" name="dataBus" />
+        <dataInput id="_36_mappingFlagInput" name="mappingFlag" />
+        <dataOutput id="_36_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_36_dataBusInput</dataInputRefs>
+          <dataInputRefs>_36_mappingFlagInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_36_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_36_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"1"</sourceRef>
+        <targetRef>_36_mappingFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_36_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_6" name="监控点1" tns:taskName="platform.component.business.B_MONITOR_PROCESS" >
+      <ioSpecification>
+        <dataInput id="_6_monitorIdInput" name="monitorId" />
+        <dataInput id="_6_switchFlagInput" name="switchFlag" />
+        <dataInput id="_6_dataBusInput" name="dataBus" />
+        <dataOutput id="_6_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_6_monitorIdInput</dataInputRefs>
+          <dataInputRefs>_6_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_6_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_6_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_6_monitorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"false"</sourceRef>
+        <targetRef>_6_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_6_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_6_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_37" name="流水更新组件" tns:taskName="platform.component.business.B_TRAN_UPDATE" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <script>if (dataBus.get("p_status")==null)
+	dataBus.set("p_status", "0");</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_37_tableNameInput" name="tableName" />
+        <dataInput id="_37_updateKeySetInput" name="updateKeySet" />
+        <dataInput id="_37_dataBusInput" name="dataBus" />
+        <dataOutput id="_37_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_37_tableNameInput</dataInputRefs>
+          <dataInputRefs>_37_updateKeySetInput</dataInputRefs>
+          <dataInputRefs>_37_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_37_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"biz_atmp_transeq"</sourceRef>
+        <targetRef>_37_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"updateKeySet=p_backend_seqno;p_backend_resp_code;p_status;settle_date"</sourceRef>
+        <targetRef>_37_updateKeySetInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_37_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_37_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_42" name="合并" gatewayDirection="Converging" />
+    <task id="_43" name="响应码转换组件" tns:taskName="platform.component.business.B_RESPONSE_MAPPING" >
+      <ioSpecification>
+        <dataInput id="_43_dataBusInput" name="dataBus" />
+        <dataInput id="_43_mappingFlagInput" name="mappingFlag" />
+        <dataOutput id="_43_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_43_dataBusInput</dataInputRefs>
+          <dataInputRefs>_43_mappingFlagInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_43_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_43_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"0"</sourceRef>
+        <targetRef>_43_mappingFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_43_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <intermediateCatchEvent id="_41" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <callActivity id="_46" name="ATMP异常处理" calledElement="001.common.itsvc.0010003" >
+      <ioSpecification>
+        <dataInput id="_46_dataBusInput" name="dataBus" />
+        <dataOutput id="_46_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_46_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_46_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_46_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_46_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <scriptTask id="_47" name="发包前处理" scriptFormat="http://www.java.com/java" >
+      <script>// 卡系统需要信息
+// 头部信息
+dataBus.set("backend_head_length",new byte[]{0x2E});
+dataBus.set("backend_msg_version",new byte[]{0x02});
+dataBus.set("backend_destination_id","00010000   ");
+dataBus.set("backend_source_id",	 "           ");
+dataBus.set("backend_reversed_use",new byte[]{0x00,0x00,0x00});
+dataBus.set("backend_batch_no",new byte[]{0x00});
+dataBus.set("backend_transaction_info","00000000");
+dataBus.set("backend_user_info",new byte[]{0x00});
+dataBus.set("backend_reject_code","00000");
+
+// 域信息
+/*dataBus.set("service_entry", "021");
+dataBus.set("service_cond", "02");
+dataBus.set("capture_code", "06");*/
+dataBus.set("sec_con_data.data_type", "2");
+dataBus.set("sec_con_data.encrypt_method_used", "1");
+dataBus.set("sec_con_data.reserved", "00000000000000");
+/*dataBus.set("expiration_date", "0000");
+dataBus.set("shop_id","111112222233333");*/
+dataBus.set("reserved.msg_rsn_code","0000");
+dataBus.set("reserved.addtnl_pos_info","0200010000");
+dataBus.set("ch_auth_info",null); // 根据条件出现，一般不需要传此域</script>
+    </scriptTask>
+    <scriptTask id="_44" name="缺省数据准备" scriptFormat="http://www.java.com/java" >
+      <script>// 设置字段缺省值
+dataBus.set("message_type", "0210");
+dataBus.set("msg_reject_code", "0000");
+//dataBus.set("settle_date", "0630");
+//dataBus.set("p_front_resp_code", "00");
+dataBus.set("p_resp_code", "000000");
+dataBus.set("resp_order", "000");
+//dataBus.set("pin_exchange", dataBus.get("pin"));
+//dataBus.set("keyGroup", "ATM_"+dataBus.get("p_term_id"));
+//dataBus.set("desKeyGroup", "CARD");
+</script>
+    </scriptTask>
+    <scriptTask id="_45" name="响应给C端数据处理" scriptFormat="http://www.java.com/java" >
+      <script>dataBus.unset("capture_code");
+dataBus.unset("service_entry");
+//dataBus.unset("service_cond");
+dataBus.unset("add_data");
+dataBus.unset("ic_data");
+
+if (dataBus.get("p_front_resp_code") == null&amp;&amp;dataBus.get("p_backend_resp_code") != null)
+    dataBus.set("p_front_resp_code", dataBus.get("p_backend_resp_code"));
+else if (dataBus.get("p_front_resp_code") == null&amp;&amp;dataBus.get("p_backend_resp_code") == null)
+	dataBus.set("p_front_resp_code", "06");</script>
+    </scriptTask>
+    <endEvent id="_16" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <endEvent id="_18" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_21" name="流水插入组件" tns:taskName="platform.component.business.B_TRAN_INSERT" >
+      <ioSpecification>
+        <dataInput id="_21_tableNameInput" name="tableName" />
+        <dataInput id="_21_dataBusInput" name="dataBus" />
+        <dataOutput id="_21_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_21_tableNameInput</dataInputRefs>
+          <dataInputRefs>_21_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_21_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"biz_atmp_transeq"</sourceRef>
+        <targetRef>_21_tableNameInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_21_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_21_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <intermediateCatchEvent id="_29" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <task id="_31" name="监控点2" tns:taskName="platform.component.business.B_MONITOR_PROCESS" >
+      <ioSpecification>
+        <dataInput id="_31_monitorIdInput" name="monitorId" />
+        <dataInput id="_31_switchFlagInput" name="switchFlag" />
+        <dataInput id="_31_dataBusInput" name="dataBus" />
+        <dataOutput id="_31_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_31_monitorIdInput</dataInputRefs>
+          <dataInputRefs>_31_switchFlagInput</dataInputRefs>
+          <dataInputRefs>_31_dataBusInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_31_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>""</sourceRef>
+        <targetRef>_31_monitorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"false"</sourceRef>
+        <targetRef>_31_switchFlagInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_31_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_31_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_47-_34" sourceRef="_47" targetRef="_34" />
+    <sequenceFlow id="_6-_33" sourceRef="_6" targetRef="_33" />
+    <sequenceFlow id="_34-_36" sourceRef="_34" targetRef="_36" />
+    <sequenceFlow id="_21-_6" sourceRef="_21" targetRef="_6" />
+    <sequenceFlow id="_36-_37" sourceRef="_36" targetRef="_37" />
+    <sequenceFlow id="_29-_42" sourceRef="_29" targetRef="_42" />
+    <sequenceFlow id="_41-_42" sourceRef="_41" targetRef="_42" />
+    <sequenceFlow id="_45-_43" sourceRef="_45" targetRef="_43" />
+    <sequenceFlow id="_42-_46" sourceRef="_42" targetRef="_46" />
+    <sequenceFlow id="_33-_47" sourceRef="_33" targetRef="_47" />
+    <sequenceFlow id="_1-_44" sourceRef="_1" targetRef="_44" />
+    <sequenceFlow id="_31-_45" sourceRef="_31" targetRef="_45" />
+    <sequenceFlow id="_43-_16" sourceRef="_43" targetRef="_16" />
+    <sequenceFlow id="_46-_18" sourceRef="_46" targetRef="_18" />
+    <sequenceFlow id="_44-_21" sourceRef="_44" targetRef="_21" />
+    <sequenceFlow id="_37-_31" sourceRef="_37" targetRef="_31" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="001.itsvc.0011003" >
+      <bpmndi:BPMNShape bpmnElement="_34" >
+        <dc:Bounds x="29" y="497" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="55" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_33" >
+        <dc:Bounds x="29" y="337" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_36" >
+        <dc:Bounds x="29" y="577" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="29" y="257" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_37" >
+        <dc:Bounds x="29" y="657" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_42" >
+        <dc:Bounds x="197" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_43" >
+        <dc:Bounds x="29" y="897" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_41" >
+        <dc:Bounds x="157" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_46" >
+        <dc:Bounds x="166" y="177" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_47" >
+        <dc:Bounds x="29" y="417" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_44" >
+        <dc:Bounds x="28" y="96" width="102" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_45" >
+        <dc:Bounds x="16" y="817" width="126" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="55" y="977" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18" >
+        <dc:Bounds x="197" y="257" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_21" >
+        <dc:Bounds x="24" y="177" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_29" >
+        <dc:Bounds x="237" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_31" >
+        <dc:Bounds x="29" y="737" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_47-_34" >
+        <di:waypoint x="79" y="441" />
+        <di:waypoint x="79" y="521" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_33" >
+        <di:waypoint x="79" y="281" />
+        <di:waypoint x="79" y="361" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_34-_36" >
+        <di:waypoint x="79" y="521" />
+        <di:waypoint x="79" y="601" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_21-_6" >
+        <di:waypoint x="79" y="201" />
+        <di:waypoint x="79" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_36-_37" >
+        <di:waypoint x="79" y="601" />
+        <di:waypoint x="79" y="681" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29-_42" >
+        <di:waypoint x="261" y="40" />
+        <di:waypoint x="221" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_41-_42" >
+        <di:waypoint x="181" y="40" />
+        <di:waypoint x="221" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_45-_43" >
+        <di:waypoint x="79" y="841" />
+        <di:waypoint x="79" y="921" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_42-_46" >
+        <di:waypoint x="221" y="120" />
+        <di:waypoint x="221" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_33-_47" >
+        <di:waypoint x="79" y="361" />
+        <di:waypoint x="79" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_44" >
+        <di:waypoint x="79" y="40" />
+        <di:waypoint x="79" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_31-_45" >
+        <di:waypoint x="79" y="761" />
+        <di:waypoint x="79" y="841" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_43-_16" >
+        <di:waypoint x="79" y="921" />
+        <di:waypoint x="79" y="1001" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_46-_18" >
+        <di:waypoint x="221" y="201" />
+        <di:waypoint x="221" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_44-_21" >
+        <di:waypoint x="79" y="120" />
+        <di:waypoint x="79" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_37-_31" >
+        <di:waypoint x="79" y="681" />
+        <di:waypoint x="79" y="761" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

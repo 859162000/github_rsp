@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root displayname="流程名称" desc="详细描述"> 
+  <params> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/>  
+    <variable name="t_hostservice_acc" type="string" displayname="请求核心批处理服务ID" desc="请求核心批处理服务ID"/>  
+    <variable name="t_ftp_host" type="string" displayname="FTP标识号" desc="FTP标识号"/> 
+  </params>  
+  <results> 
+    <variable name="dataBus" type="databus" displayname="数据总线"/> 
+  </results> 
+</root>

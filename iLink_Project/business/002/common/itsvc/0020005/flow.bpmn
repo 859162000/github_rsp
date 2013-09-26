@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_4-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_5-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_8-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="002.common.itsvc.0020005" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <scriptTask id="_2" name="终端校验规则" scriptFormat="http://www.java.com/java" >
+      <script>if (dataBus.getList("terminal_ctrl").size()==0 || dataBus.get("terminal_ctrl[0]") == null) {
+	System.err.println("终端校验规则, 终端号找不到, p_term_id:" + dataBus.get("p_term_id"));
+	dataBus.set("p_front_resp_code", "95");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+} else {
+	if ("0".equals(dataBus.get("terminal_ctrl[0].tran_sate"))) {
+		if (!dataBus.get("batch_no").equals(dataBus.get("terminal_ctrl[0].batch_no"))) {
+			System.err.println("终端校验规则, 批次号不匹配(数据库值与当前不匹配), terminal_ctrl[0].batch_no:" + dataBus.get("terminal_ctrl[0].batch_no"));
+			dataBus.set("p_front_resp_code", "96");
+			kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+		}
+	} else {
+		System.err.println("终端校验规则, 终端未签到(终端状态), terminal_ctrl[0].tran_sate:" + dataBus.get("terminal_ctrl[0].tran_sate"));
+		dataBus.set("p_front_resp_code", "97");
+		kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+	}
+}</script>
+    </scriptTask>
+    <endEvent id="_3" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_4" name="监控点" tns:taskName="platform.component.business.B_MONITOR_PROCESS" >
+      <ioSpecification>
+        <dataInput id="_4_monitorIdInput" name="monitorId" />
+        <dataInput id="_4_dataBusInput" name="dataBus" />
+        <dataInput id="_4_componentIdInput" name="componentId" />
+        <dataOutput id="_4_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_4_monitorIdInput</dataInputRefs>
+          <dataInputRefs>_4_dataBusInput</dataInputRefs>
+          <dataInputRefs>_4_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_4_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"terminal_check"</sourceRef>
+        <targetRef>_4_monitorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_4_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"sub_terminal_check_monitor"</sourceRef>
+        <targetRef>_4_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_4_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <task id="_5" name="查询终端号信息" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_5_sqlTypeInput" name="sqlType" />
+        <dataInput id="_5_returnKeyInput" name="returnKey" />
+        <dataInput id="_5_sqlIdInput" name="sqlId" />
+        <dataInput id="_5_dataBusInput" name="dataBus" />
+        <dataInput id="_5_componentIdInput" name="componentId" />
+        <dataOutput id="_5_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_5_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_5_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_5_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_5_dataBusInput</dataInputRefs>
+          <dataInputRefs>_5_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_5_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_5_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"terminal_ctrl"</sourceRef>
+        <targetRef>_5_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"002.common.sql.terminal_ctrl.selectOne"</sourceRef>
+        <targetRef>_5_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_5_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"select_term_ctrl"</sourceRef>
+        <targetRef>_5_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_5_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_6" name="分支" gatewayDirection="Diverging" />
+    <endEvent id="_7" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_8" name="终端权限查询" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_8_sqlTypeInput" name="sqlType" />
+        <dataInput id="_8_returnKeyInput" name="returnKey" />
+        <dataInput id="_8_sqlIdInput" name="sqlId" />
+        <dataInput id="_8_dataBusInput" name="dataBus" />
+        <dataInput id="_8_componentIdInput" name="componentId" />
+        <dataOutput id="_8_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_8_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_8_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_8_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_8_dataBusInput</dataInputRefs>
+          <dataInputRefs>_8_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_8_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_8_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"hasPrivilege"</sourceRef>
+        <targetRef>_8_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"002.common.sql.ops_merch_info.hasPrivilege"</sourceRef>
+        <targetRef>_8_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_8_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"privilege_check"</sourceRef>
+        <targetRef>_8_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_8_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_9" name="终端权限校验" scriptFormat="http://www.java.com/java" >
+      <script>if (dataBus.getList("hasPrivilege").isEmpty() || dataBus.get("hasPrivilege[0]") == null) {
+	System.err.println("终端校验规则, 终端权限验证(无权限),terminal_ctrl[0].privilage_flag:" + dataBus.get("terminal_ctrl[0].privilage_flag"));
+	dataBus.set("p_front_resp_code", "01");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+}</script>
+    </scriptTask>
+    <intermediateCatchEvent id="_10" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <endEvent id="_11" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <intermediateCatchEvent id="_12" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <exclusiveGateway id="_13" name="合并" gatewayDirection="Converging" />
+
+    <!-- connections -->
+    <sequenceFlow id="_5-_2" sourceRef="_5" targetRef="_2" />
+    <sequenceFlow id="_4-_3" sourceRef="_4" targetRef="_3" />
+    <sequenceFlow id="_9-_4" sourceRef="_9" targetRef="_4" />
+    <sequenceFlow id="_6-_5" sourceRef="_6" targetRef="_5" name="处理" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return "true".equals(dataBus.get("terminal_check_process"))</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1-_6" sourceRef="_1" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" name="不处理" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_2-_8" sourceRef="_2" targetRef="_8" />
+    <sequenceFlow id="_8-_9" sourceRef="_8" targetRef="_9" />
+    <sequenceFlow id="_13-_11" sourceRef="_13" targetRef="_11" />
+    <sequenceFlow id="_10-_13" sourceRef="_10" targetRef="_13" />
+    <sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="002.common.itsvc.0020005" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="129" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="33" y="257" width="126" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="72" y="577" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="39" y="497" width="114" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="38" y="177" width="116" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="129" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="186" y="177" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="46" y="337" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="16" y="417" width="160" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="226" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="266" y="177" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="306" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="266" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_5-_2" >
+        <di:waypoint x="96" y="201" />
+        <di:waypoint x="96" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_3" >
+        <di:waypoint x="96" y="521" />
+        <di:waypoint x="96" y="601" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_4" >
+        <di:waypoint x="96" y="441" />
+        <di:waypoint x="96" y="521" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_5" >
+        <di:waypoint x="153" y="120" />
+        <di:waypoint x="96" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_6" >
+        <di:waypoint x="153" y="40" />
+        <di:waypoint x="153" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="153" y="120" />
+        <di:waypoint x="210" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_8" >
+        <di:waypoint x="96" y="281" />
+        <di:waypoint x="96" y="361" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_9" >
+        <di:waypoint x="96" y="361" />
+        <di:waypoint x="96" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_11" >
+        <di:waypoint x="290" y="120" />
+        <di:waypoint x="290" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_13" >
+        <di:waypoint x="250" y="40" />
+        <di:waypoint x="290" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_13" >
+        <di:waypoint x="330" y="40" />
+        <di:waypoint x="290" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

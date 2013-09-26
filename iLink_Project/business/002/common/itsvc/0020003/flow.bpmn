@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_5-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_12-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <itemDefinition id="_14-dataBusItem" structureRef="com.eastcom.ilink.common.databus.DataBus" />
+
+  <process processType="Private" isExecutable="true" id="002.common.itsvc.0020003" name="Sample Process" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="java.util.*" />
+     <tns:import name="com.eastcom.ilink.common.util.*" />
+     <tns:import name="com.eastcom.ilink.common.exception.*" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="dataBus" itemSubjectRef="_dataBusItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_2" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_5" name="监控点" tns:taskName="platform.component.business.B_MONITOR_PROCESS" >
+      <ioSpecification>
+        <dataInput id="_5_monitorIdInput" name="monitorId" />
+        <dataInput id="_5_dataBusInput" name="dataBus" />
+        <dataInput id="_5_componentIdInput" name="componentId" />
+        <dataOutput id="_5_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_5_monitorIdInput</dataInputRefs>
+          <dataInputRefs>_5_dataBusInput</dataInputRefs>
+          <dataInputRefs>_5_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_5_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"merchant_check"</sourceRef>
+        <targetRef>_5_monitorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_5_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"sub_merchant_check_monitor"</sourceRef>
+        <targetRef>_5_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_5_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <exclusiveGateway id="_6" name="分支" gatewayDirection="Diverging" />
+    <endEvent id="_7" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    
+    <intermediateCatchEvent id="_8" name="信号" >
+      <signalEventDefinition signalRef="componentSignal"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_9" name="信号" >
+      <signalEventDefinition signalRef="flowSignal"/>
+    </intermediateCatchEvent>
+    <exclusiveGateway id="_10" name="合并" gatewayDirection="Converging" />
+    <endEvent id="_11" name="结束" >
+        <terminateEventDefinition/>
+    </endEvent>
+    
+    <task id="_12" name="获取渠道商户验证方式" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_12_sqlTypeInput" name="sqlType" />
+        <dataInput id="_12_returnKeyInput" name="returnKey" />
+        <dataInput id="_12_sqlIdInput" name="sqlId" />
+        <dataInput id="_12_dataBusInput" name="dataBus" />
+        <dataInput id="_12_componentIdInput" name="componentId" />
+        <dataOutput id="_12_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_12_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_12_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_12_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_12_dataBusInput</dataInputRefs>
+          <dataInputRefs>_12_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_12_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_12_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"channel_merch_cntrl_type"</sourceRef>
+        <targetRef>_12_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"002.common.sql.plat_service_cntrl.merchant_check"</sourceRef>
+        <targetRef>_12_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_12_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"select_merch_type"</sourceRef>
+        <targetRef>_12_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_12_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_13" name="判断是否存在渠道信息" scriptFormat="http://www.java.com/java" >
+      <script>System.err.println("-----------------------------sssss------------------");
+if (dataBus.getList("channel_merch_cntrl_type").isEmpty() || dataBus.get("channel_merch_cntrl_type[0]") == null) {
+	System.err.println("商户校验规则, 渠道服务控制表不存在相关信息或者商户校验方式字段为空");
+	dataBus.set("p_front_resp_code", "02");
+	kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+}</script>
+    </scriptTask>
+    <task id="_14" name="查询特殊商户登记" tns:taskName="platform.component.other.P_SQL_EXECUTE" >
+      <ioSpecification>
+        <dataInput id="_14_sqlTypeInput" name="sqlType" />
+        <dataInput id="_14_returnKeyInput" name="returnKey" />
+        <dataInput id="_14_sqlIdInput" name="sqlId" />
+        <dataInput id="_14_dataBusInput" name="dataBus" />
+        <dataInput id="_14_componentIdInput" name="componentId" />
+        <dataOutput id="_14_dataBusOutput" name="dataBus" />
+        <inputSet>
+          <dataInputRefs>_14_sqlTypeInput</dataInputRefs>
+          <dataInputRefs>_14_returnKeyInput</dataInputRefs>
+          <dataInputRefs>_14_sqlIdInput</dataInputRefs>
+          <dataInputRefs>_14_dataBusInput</dataInputRefs>
+          <dataInputRefs>_14_componentIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_14_dataBusOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>"select"</sourceRef>
+        <targetRef>_14_sqlTypeInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"hasOpsMerchTypeRecord"</sourceRef>
+        <targetRef>_14_returnKeyInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"002.common.sql.ops_merch_cntrl.merchant_check"</sourceRef>
+        <targetRef>_14_sqlIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>dataBus</sourceRef>
+        <targetRef>_14_dataBusInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>"select_ops_merch_cntrl"</sourceRef>
+        <targetRef>_14_componentIdInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_14_dataBusOutput</sourceRef>
+        <targetRef>dataBus</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_15" name="商户验证脚本" scriptFormat="http://www.java.com/java" >
+      <script>boolean hasOpsMerchTypeRecord = dataBus.getList("hasOpsMerchTypeRecord").isEmpty() &amp;&amp; dataBus.get("hasOpsMerchTypeRecord[0]") != null;
+if ("13".contains((String)dataBus.get("channel_merch_cntrl_type[0]"))) {
+	if (hasOpsMerchTypeRecord) {
+		System.err.println("商户校验规则, 白名单中不存在该记录");
+		dataBus.set("p_front_resp_code", "02");
+		kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+	}
+} else if ("24".contains((String)dataBus.get("channel_merch_cntrl_type[0]"))) {
+	if (!hasOpsMerchTypeRecord) {
+		System.err.println("商户校验规则, 黑名单中存在该记录");
+		dataBus.set("p_front_resp_code", "02");
+		kcontext.getKnowledgeRuntime().signalEvent("flowSignal", null);
+	}
+}</script>
+    </scriptTask>
+
+    <!-- connections -->
+    <sequenceFlow id="_5-_2" sourceRef="_5" targetRef="_2" />
+    <sequenceFlow id="_15-_5" sourceRef="_15" targetRef="_5" />
+    <sequenceFlow id="_1-_6" sourceRef="_1" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" name="不处理" tns:priority="9" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_8-_10" sourceRef="_8" targetRef="_10" />
+    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
+    <sequenceFlow id="_10-_11" sourceRef="_10" targetRef="_11" />
+    <sequenceFlow id="_6-_12" sourceRef="_6" targetRef="_12" name="处理" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return "true".equals(dataBus.get("terminal_check_process"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13" />
+    <sequenceFlow id="_13-_14" sourceRef="_13" targetRef="_14" />
+    <sequenceFlow id="_14-_15" sourceRef="_14" targetRef="_15" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="002.common.itsvc.0020003" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="83" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="150" y="577" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="124" y="497" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="83" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="16" y="177" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="245" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="325" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="285" y="96" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="285" y="177" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="96" y="177" width="157" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="58" y="257" width="233" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" >
+        <dc:Bounds x="93" y="337" width="162" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15" >
+        <dc:Bounds x="92" y="417" width="165" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_5-_2" >
+        <di:waypoint x="174" y="521" />
+        <di:waypoint x="174" y="601" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-_5" >
+        <di:waypoint x="174" y="441" />
+        <di:waypoint x="174" y="521" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_6" >
+        <di:waypoint x="107" y="40" />
+        <di:waypoint x="107" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="107" y="120" />
+        <di:waypoint x="40" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_10" >
+        <di:waypoint x="269" y="40" />
+        <di:waypoint x="309" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
+        <di:waypoint x="349" y="40" />
+        <di:waypoint x="309" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_11" >
+        <di:waypoint x="309" y="120" />
+        <di:waypoint x="309" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_12" >
+        <di:waypoint x="107" y="120" />
+        <di:waypoint x="174" y="201" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_13" >
+        <di:waypoint x="174" y="201" />
+        <di:waypoint x="174" y="281" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_14" >
+        <di:waypoint x="174" y="281" />
+        <di:waypoint x="174" y="361" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14-_15" >
+        <di:waypoint x="174" y="361" />
+        <di:waypoint x="174" y="441" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

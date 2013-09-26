@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.common.sql.biz_contract_main">
+	<!-- 查询记录：单条和多条 -->	
+	
+	<select id="select" parameterType="map" resultType="map">
+		select ${ t_qry_columns } from biz_contract_main a, ${t_subtable_name} b where a. serial_no = b. serial_no and ${ t_qry_wherecond }
+	</select>
+	
+	<!-- 增加记录 -->	
+	<insert id="insert" parameterType="map">
+		insert into biz_contract_main
+		values
+		(
+			serial_no.nextval,
+			#{p_biz_seqno,	jdbcType=INTEGER},
+			#{p_subsys_code,jdbcType=VARCHAR},
+			#{sub_biztype,	jdbcType=VARCHAR},
+			#{contract_no,	jdbcType=VARCHAR},
+			#{contract_no2,	jdbcType=VARCHAR},
+			#{contract_name,jdbcType=VARCHAR},
+			#{user_id,		jdbcType=VARCHAR},
+			#{status,		jdbcType=VARCHAR},
+			#{brno,			jdbcType=VARCHAR},
+			#{tellerno,		jdbcType=VARCHAR},
+			#{work_date,	jdbcType=VARCHAR},
+			#{u_brno,		jdbcType=VARCHAR},
+			#{u_tellerno,	jdbcType=VARCHAR},
+			#{u_workdate,	jdbcType=VARCHAR},
+			#{note1,		jdbcType=VARCHAR},
+			#{note2,		jdbcType=VARCHAR},
+			#{note3,		jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 更新记录 -->	
+	<update id="update" parameterType="map">
+		update biz_contract_main set
+			status=#{status,	jdbcType=VARCHAR},
+			u_brno=#{u_brno,	jdbcType=VARCHAR},
+			u_tellerno=#{u_tellerno,	jdbcType=VARCHAR},
+			u_workdate=#{u_workdate,	jdbcType=VARCHAR},
+			note1=#{note1,	jdbcType=VARCHAR},
+			note2=#{note2,	jdbcType=VARCHAR},
+			note3=#{note3,	jdbcType=VARCHAR} 
+		where 
+			SERIAL_NO =#{serial_no,	jdbcType=INTEGER}
+	</update>
+	
+	<update id="update_jy" parameterType="map">
+		update biz_contract_main set
+			status=#{status,	jdbcType=VARCHAR},
+			u_brno=#{u_brno,	jdbcType=VARCHAR},
+			u_tellerno=#{u_tellerno,	jdbcType=VARCHAR},
+			u_workdate=#{u_workdate,	jdbcType=VARCHAR}
+		where 
+			SERIAL_NO =#{serial_no,	jdbcType=INTEGER}
+	</update>
+	 
+	 <select id="select_contract_main" parameterType="map" resultType="map">
+		select a.STATUS as cm_status from biz_contract_main a where a.SERIAL_NO = #{cm_serialno,jdbcType=VARCHAR }
+	</select>
+	
+	<select id="get_contract_main_seqno" resultType="map">
+		select to_char(SERIALNO.nextval) as serial_no from dual
+	</select>
+	
+</mapper>
+
+

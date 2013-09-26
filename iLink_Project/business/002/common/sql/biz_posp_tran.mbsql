@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="002.common.sql.biz_posp_tran">
+	<select id="select_org_trxn" parameterType="map" resultType="string">
+		SELECT T.P_STATUS
+  FROM BIZ_POSP_TRAN T
+ WHERE T.TERM_TRACE_NO = #{term_trace_no, jdbcType=VARCHAR}
+   AND T.P_TERM_ID = #{p_term_id, jdbcType=VARCHAR}
+   AND T.BATCH_NO = #{batch_no, jdbcType=VARCHAR}
+	</select>
+</mapper>
+
+
