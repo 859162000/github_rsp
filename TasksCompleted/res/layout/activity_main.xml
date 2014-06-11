@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tc="http://schemas.android.com/apk/res/com.snailws.taskscompleted"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <include layout="@layout/header_common" />
+    
+    <Button 
+        android:id="@+id/button_test"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="开始"
+        />
+
+    <com.snailws.taskscompleted.activity.TasksCompletedView
+        android:id="@+id/tasks_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tc:radius="80dp"
+        tc:strokeWidth="3dp"
+        tc:circleColor="@color/circle_color"
+        tc:ringColor="@color/ring_color" />
+
+</LinearLayout>
